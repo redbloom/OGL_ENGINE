@@ -667,124 +667,6 @@ void collidedObject_callback(string nameCollidedObject) // Camara - collboxes
 }
 
 
-void collidedBuff_callback(string nameCollidedObject) {
-
-    //if (nameCollidedObject == "Star") {
-    //    playerAtk = Yoshi.getAtk();
-    //    playerAtk = actualStar->getBuff(playerAtk);
-    //    Yoshi.setAtk(playerAtk);
-    //    actualStar->isPicked = true;
-    //    actualStar->bDraw = false;
-    //    maxBuff--;
-    //}
-
-    //if (nameCollidedObject == "Heart") {
-    //    int playerHp = Yoshi.getHP();
-    //    playerHp = actualHeart->getBuff(playerHp);
-    //    Yoshi.setHP(playerHp);
-    //    actualHeart->isPicked = true;
-    //    actualHeart->bDraw = false;
-    //    maxBuff--;
-    //}
-
-    //if (nameCollidedObject == "Coin") {
-    //    int playerScore = Yoshi.getScore();
-    //    playerScore = actualCoin->getBuff(playerScore);
-    //    Yoshi.setScore(playerScore);
-    //    actualCoin->isPicked = true;
-    //    actualCoin->bDraw = false;
-    //    maxBuff--;
-    //}
-
-} 
-
-void collidedEgg_callback(string nameCollidedObject) {
-
-    if (nameCollidedObject == "shyGuy") {
-        actualSG->isMoving = false;
-        actualSG->itArrived = true;
-        if (!actualSG->enemCollPlayer) {
-            enemyAtk = actualSG->attackObjective();
-            Egg.getDMG(enemyAtk);
-        }
-    }
-
-    if (nameCollidedObject == "billBalla") {
-        actualBB->isMoving = false;
-        actualBB->itArrived = true;
-        if (!actualBB->enemCollPlayer) {
-            enemyAtk = actualBB->attackObjective();
-            Egg.getDMG(enemyAtk);
-        }
-
-    }
-
-    if (nameCollidedObject == "Blooper") {
-         actualBL->isMoving = false;
-         actualBL->itArrived = true;
-         if (!actualBL->enemCollPlayer) {
-             enemyAtk = actualBL->attackObjective();
-             Egg.getDMG(enemyAtk);
-         }
-    }
-
-}
-
-
-void collidedEnemy_callback(string nameCollidedObject) {
-
-
-    //if (nameCollidedObject == "shyGuy") {
-    //    collisionSide(actualSG->cb, Yoshi.cb);
-    //    actualSG->isMoving = false;
-
-    //    // Si Yoshi no esta golpeando, entonces ataca el huevo
-    //    // Tendria que poner un timer que lo haga cada 20 segundos...
-    //    // Como el de la animacion
-    //    if (Yoshi.isPunching) {
-    //       playerAtk = Yoshi.attackEnemy();
-    //       actualSG->getDMG(playerAtk);
-    //    }
-    //    else {
-    //        enemyAtk = actualSG->attackObjective();
-    //        Yoshi.getDMG(enemyAtk);
-    //    }
-    //}
-
-    //if (nameCollidedObject == "billBalla") {
-    //    collisionSide(actualBB->cb, Yoshi.cb);
-    //    actualBB->isMoving = false;
-
-    //    if (Yoshi.isPunching) {
-    //        playerAtk = Yoshi.attackEnemy();
-    //        actualBB->getDMG(playerAtk);
-    //    }
-    //    else {
-    //        enemyAtk = actualBB->attackObjective();
-    //        Yoshi.getDMG(enemyAtk);
-    //    }
-
-    //}
-
-    //if (nameCollidedObject == "Blooper") {
-    //    collisionSide(actualBL->cb, Yoshi.cb);
-    //    actualBL->isMoving = false;
-    //
-    //    if (Yoshi.isPunching) {
-    //        playerAtk = Yoshi.attackEnemy();
-    //        actualBL->getDMG(playerAtk);
-    //    }
-    //    else {
-    //        enemyAtk = actualBL->attackObjective();
-    //        Yoshi.getDMG(enemyAtk);
-    //    }
-    //
-    //}
-
-}
-
-
-
 void collidedModel_callback(string nameCollidedObject) {
 
     // Modelos
@@ -793,12 +675,11 @@ void collidedModel_callback(string nameCollidedObject) {
         string name = models[i].name;
         if (name == nameCollidedObject) {
 
-            if (nameCollidedObject == "krustyKrab") {
+            if (nameCollidedObject == "KrustyKrab" || nameCollidedObject == "Menu") {
                 return;
             }
-
             //Para bloquear el paso con los modelos
-            //collisionSide(models[i].collbox, Yoshi.cb);
+            collisionSide(models[i].collbox, camera.collbox);
 
         }
 
@@ -858,7 +739,7 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime, stopCam
     float velocity = MovementSpeed * deltaTime;
 
     // Ejecutamos el movimiento
-    if (direction == FORWARD && notFrontMove == false) {
+    if (direction == FORWARD) {
         Position += Front * velocity;
     }
     if (direction == BACKWARD) {
@@ -870,11 +751,11 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime, stopCam
     if (direction == RIGHT) {
         Position += Right * velocity;
     }
-    if (Position.y > 1.4f or Position.y < 1.0f) // Para que no suba ni baje
-        return;
+
+    Position.y = 1.0f;
 
     // Checamos si no colisiono con algun objeto
-    //collisions();
+    collisions();
     // Si no, entonces liberar cualquier movimiento
     if (!isCollision) {
         stop.Back = false;
@@ -888,24 +769,27 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime, stopCam
     // ejecutamos el cambio. 
     if (stop.Back && direction == BACKWARD) {
         Position = antPos; // Regresamos a la posicion anterior
+        camPos = Position;
         return;
     }
     if (stop.Front && direction == FORWARD) {
         Position = antPos;
+        camPos = Position;
         return;
     }
     if (stop.Right && direction == RIGHT) {
         Position = antPos;
+        camPos = Position;
         return;
     }
     if (stop.Left && direction == LEFT) {
         Position = antPos;
+        camPos = Position;
         return;
     }
 
     // De no ser asi, seteamos la nueva posicion de nuestra camara.
-    //Position = camPos;
-    //Yoshi.updatePosition(posModel);
+    camPos = Position;
     collbox.setPosition(Position);
     collbox2.setPosition(Position);
     collbox.defineCollisionBox();
@@ -917,36 +801,15 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime, stopCam
 // MOVIMIENTOS DE LA CAMARA
 
 void foward() {
-        //Tomo la posicion del modelo
-        //posModel = Yoshi.model.getPosition();
-
-        //// Muevo el modelo
-        //posModel = Yoshi.model.getPosition();
-        //posModel.x += movement;
-
-        ////Le doy los valores a la camara de mi modelo
-        //camPos.x = posModel.x - 1.3;
-        //camPos.z = posModel.z;
-        
-        camPos.x += movement;
-        camera.ProcessKeyboard(FORWARD, deltaTime, stop);
-        skyPos += camera.Front * glm::vec3(2);
+   camPos = camera.Position;
+   camPos.x += movement;
+   camera.ProcessKeyboard(FORWARD, deltaTime, stop);
+   skyPos += camera.Front * glm::vec3(2);
 
 }
 
 void backward() {
-
-    //Tomo la posicion del modelo
-    //posModel = Yoshi.model.getPosition();
-
-    // Muevo el modelo
-    //posModel = Yoshi.model.getPosition();
-    //posModel.x -= movement;
-
-    //Le doy los valores a la camara de mi modelo
-    //camPos.x = posModel.x - 1.3;
-    //camPos.z = posModel.z;
-
+    camPos = camera.Position;
     camPos.x -= movement;
     camera.ProcessKeyboard(BACKWARD, deltaTime, stop);
     skyPos -= camera.Front * glm::vec3(2);
@@ -954,42 +817,21 @@ void backward() {
 }
 
 void left() {
-
-        ////Tomo la posicion del modelo
-        //posModel = Yoshi.model.getPosition();
-
-        //// Muevo el modelo
-        //posModel = Yoshi.model.getPosition();
-        //posModel.z -= movement;
-
-        ////Le doy los valores a la camara de mi modelo
-        //camPos.x = posModel.x - 1.3;
-        //camPos.z = posModel.z;
-
-        camPos.z -= movement;
-        camera.ProcessKeyboard(LEFT, deltaTime, stop);
-        skyPos -= camera.Right * glm::vec3(2);
-
+    camPos = camera.Position;
+    camPos.z -= movement;
+    camera.ProcessKeyboard(LEFT, deltaTime, stop);
+    skyPos -= camera.Right * glm::vec3(2);
+    
     
 }
 
 void right() {
 
-        ////Tomo la posicion del modelo
-        //posModel = Yoshi.model.getPosition();
+    camPos = camera.Position;
+    camPos.z += movement;
+    camera.ProcessKeyboard(RIGHT, deltaTime, stop);
+    skyPos -= camera.Right * glm::vec3(2);
 
-        //// Muevo el modelo
-        //posModel = Yoshi.model.getPosition();
-        //posModel.z += movement;
-
-        ////Le doy los valores a la camara de mi modelo
-        //camPos.x = posModel.x - 1.3;
-        //camPos.z = posModel.z;
-
-        camPos.z += movement;
-        camera.ProcessKeyboard(RIGHT, deltaTime, stop);
-        skyPos -= camera.Right * glm::vec3(2);
-    
 }
 
 #pragma endregion

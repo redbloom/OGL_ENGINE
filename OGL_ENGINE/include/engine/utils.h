@@ -21,15 +21,40 @@ static bool intersect(CollisionBox a, CollisionBox b)
 
 void detectColls(CollisionBox *coll, string name, Camera *cam, bool renderCollBox, void (*callback)(string))
 {
+    bool itCollided = false;
     glm::mat4 projection = glm::perspective(glm::radians(cam->Zoom), (float)800 / 600, 0.1f, 100.0f);
     glm::mat4 view = cam->GetViewMatrix();
-    if (intersect(*coll, cam->collbox))
+    if (intersect(*coll, cam->collbox)) {
         callback(name);
+        itCollided = true;
+    }
     if (intersect(*coll, cam->collbox2))
         cam->notFrontMove = true;
     if (renderCollBox)
         coll->draw(view, projection);
+
 }
+
+void detectColls(vector<Model> models, Camera* cam, bool renderCollBox, void (*callback)(string)) {
+    bool itCollided = false;
+    glm::mat4 projection = glm::perspective(glm::radians(cam->Zoom), (float)800 / 600, 0.1f, 100.0f);
+    glm::mat4 view = cam->GetViewMatrix();
+    for (int i = 0; i < models.size(); i++)
+    {
+        string name = models[i].name;
+        if (intersect(models[i].collbox, cam->collbox)) {
+            callback(name);
+            // Si llego a colisionar con algo, entonces
+            itCollided = true;
+        }
+    }
+
+    if (!itCollided)
+        isCollision = false;
+    else
+        isCollision = true;
+}
+
 
 void detectColls(CollisionBox* coll, string name, Model* model, bool renderCollBox, void (*callback)(string))
 {
@@ -52,15 +77,20 @@ void detectColls(CollisionBox* coll, string name, CollisionBox* model, bool rend
 
 void detectColls(CollisionBox* coll, string name, CollisionBox* model, string nameCollided, bool renderCollBox, void (*callback)(string))
 {
+    bool itCollided = false;
     if (intersect(*coll, *model)) {
-        if (nameCollided == "Yoshi")
-            isCollision = true;
-        if (name == "shyGuy" || name == "billBalla" || name == "Blooper")
-            enemyCollidedPlayer = true;
-        callback(name);
+        if (nameCollided == "Cam") {
+            callback(name);
+            // Si llego a colisionar con algo, entonces
+            itCollided = true;
+        }
     }
-    else
-        enemyCollidedPlayer = false;
+    
+    if (itCollided)
+        isCollision = true;
+    else 
+        isCollision = false;
+
 }
 
 void detectColls(map<int, pair<string, CollisionBox>> collboxes, Camera *cam, bool renderCollBox, void (*callback)(string))
@@ -73,7 +103,7 @@ void detectColls(map<int, pair<string, CollisionBox>> collboxes, Camera *cam, bo
 
         if (intersect(colls.second.second, cam->collbox)) {
             callback(colls.second.first);
-            itCollided = true; // Si llego a colisionar con algo, entonces
+            // Si llego a colisionar con algo, entonces
         }
         if (intersect(colls.second.second, cam->collbox2))
             cam->notFrontMove = true;
@@ -86,6 +116,30 @@ void detectColls(map<int, pair<string, CollisionBox>> collboxes, Camera *cam, bo
     else
         isCollision = true;
 }
+
+
+
+void detectCam(CollisionBox* coll, string name, Camera* cam, bool renderCollBox, void (*callback)(string)) {
+    bool itCollided = false;
+    glm::mat4 projection = glm::perspective(glm::radians(cam->Zoom), (float)800 / 600, 0.1f, 100.0f);
+    glm::mat4 view = cam->GetViewMatrix();
+
+    if (name == "KrustyKrab")
+        return;
+
+    if (intersect(*coll, cam->collbox)) {
+        callback(name);
+        itCollided = true; // Si llego a colisionar con algo, entonces
+    }
+    if (renderCollBox)
+        coll->draw(view, projection);
+
+    if (!itCollided)
+        isCollision = false;
+    else
+        isCollision = true;
+}
+
 
 void detectColls(rbEnvironment *env, void (*callback)(string, string))
 {

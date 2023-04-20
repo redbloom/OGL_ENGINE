@@ -126,7 +126,7 @@ bool isCollBoxModel = false;
 bool renderCollBox = false;
 bool renderLightingCubes = false;
 float angleObjects = 0.0f;
-float movement = 0.03;
+float movement = 0.01;
 
 //::::::::::::::ARREGLOS DE OBJETOS:::::::::::::://
 vector<glm::vec3> pointLightPositions;
@@ -136,6 +136,7 @@ vector<RigidModel> rigidModels;
 vector<RigidModel> rbmodels = rigidModels;
 
 vector<Model> models;
+bool callbackCalled = false;
 
 map<int, pair<string, CollisionBox>> collboxes;
 map<int, pair<string, CollisionBox>> lightcubes;

@@ -108,10 +108,10 @@ int main()
         loadEnviroment(&terrain, &sky, view, projection);
 
         //:::: AGUA :::://
-        drawWater(view, projection);
+        //drawWater(view, projection);
 
         //:::: PARTICLES :::://
-        drawParticles(view, projection);
+        //drawParticles(view, projection);
 
         //:::: BILLBOARDS :::://
         //drawBillboard();
@@ -120,7 +120,7 @@ int main()
         //drawGUI();
 
         //:::: COLISIONES :::://
-        //collisions();
+        collisions();
 
         // HP check
         //hpCheck();
@@ -218,11 +218,11 @@ void initScene(Shader ourShader)
 
     //Definimos los collbox de la camara
     camera.setCollBox();
-    scaleCollBox = camera.collbox.getScale();
-    scaleCollBox.x -= 0.8;
-    scaleCollBox.z -= 0.8;
-    scaleCollBox.y += 1.0;
-    camera.collbox.setScale(scaleCollBox);
+    //scaleCollBox = camera.collbox.getScale();
+    //scaleCollBox.x -= 0.8;
+    //scaleCollBox.z -= 0.8;
+    //scaleCollBox.y += 1.0;
+    //camera.collbox.setScale(scaleCollBox);
     camPos = camera.Position;
 
     //:::: CARGAMOS LOS SHADERS :::://
@@ -256,9 +256,9 @@ void initScene(Shader ourShader)
 
     // Fuera
     models.push_back(Model("fireHydr", "models/fireHydr/fireHydr.obj", glm::vec3(5.2, -0.1, 9.47), glm::vec3(0, -90, 0), 0.0f, 0.18f));
-    models.push_back(Model("volkswagenGolf", "models/volkswagenGolf/volkswagenGolf.obj", glm::vec3(19.89, -0.15, 18.3), glm::vec3(0, -90, 0), 0.0f, 0.063f));
-    models.push_back(Model("sportsCar", "models/sportsCar/sportsCar.obj", glm::vec3(20.19, -0.1, 20.9), glm::vec3(0, -90, 0), 0.0f, 0.08f));
-    models.push_back(Model("Trash", "models/Trash/Trash.obj", glm::vec3(21.78, -0.1, 12.24), glm::vec3(0, 0, 0), 0.0f, 0.35f));
+    //models.push_back(Model("volkswagenGolf", "models/volkswagenGolf/volkswagenGolf.obj", glm::vec3(19.89, -0.15, 18.3), glm::vec3(0, -90, 0), 0.0f, 0.063f));
+    //models.push_back(Model("sportsCar", "models/sportsCar/sportsCar.obj", glm::vec3(20.19, -0.1, 20.9), glm::vec3(0, -90, 0), 0.0f, 0.08f));
+    //models.push_back(Model("Trash", "models/Trash/Trash.obj", glm::vec3(21.78, -0.1, 12.24), glm::vec3(0, 0, 0), 0.0f, 0.35f));
 
 
 
@@ -277,20 +277,6 @@ void initScene(Shader ourShader)
                                         // Lugar                  //Escala
     collbox = CollisionBox(glm::vec3(-2.1f, -0.2f, 3.0f), glm::vec3(2.27, 3, 12.6), colorCollbox);
     collboxes.insert(pair<int, pair<string, CollisionBox>>(0, pair<string, CollisionBox>("cbBarrier1", collbox)));
-    //collbox = CollisionBox(glm::vec3(0.0f, -0.2f, 11.6f), glm::vec3(4.3, 5, 4.4), colorCollbox);
-    //collboxes.insert(pair<int, pair<string, CollisionBox>>(1, pair<string, CollisionBox>("cbBarrier2", collbox)));
-    //collbox = CollisionBox(glm::vec3(1.0f, -0.2f, -3.9f), glm::vec3(4.0, 5, 4.6), colorCollbox);
-    //collboxes.insert(pair<int, pair<string, CollisionBox>>(2, pair<string, CollisionBox>("cbBarrier3", collbox)));
-    //collbox = CollisionBox(glm::vec3(24.4, 0.1, 1.5), glm::vec3(1.0, 3, 0.8), colorCollbox);
-    //collboxes.insert(pair<int, pair<string, CollisionBox>>(3, pair<string, CollisionBox>("cbPared1", collbox)));
-    //collbox = CollisionBox(glm::vec3(24.4, 0.1, 4.5), glm::vec3(1.0, 3, 0.8), colorCollbox);
-    //collboxes.insert(pair<int, pair<string, CollisionBox>>(4, pair<string, CollisionBox>("cbPared2", collbox)));
-    //collbox = CollisionBox(glm::vec3(27.2, 0.1, 5.5), glm::vec3(4.5, 3, 0.8), colorCollbox);
-    //collboxes.insert(pair<int, pair<string, CollisionBox>>(5, pair<string, CollisionBox>("cbPared3", collbox)));
-    //collbox = CollisionBox(glm::vec3(30.6, 0.1, 3.0), glm::vec3(1.1, 3, 3.4), colorCollbox);
-    //collboxes.insert(pair<int, pair<string, CollisionBox>>(6, pair<string, CollisionBox>("cbPared4", collbox)));
-    //collbox = CollisionBox(glm::vec3(27.2, 0.1, 0.5), glm::vec3(4.5, 3, 0.8), colorCollbox);
-    //collboxes.insert(pair<int, pair<string, CollisionBox>>(7, pair<string, CollisionBox>("cbPared5", collbox)));
 
 
     //CREAMOS LOS LIGHTCUBES QUE ENREALIDAD SON COLLISION BOXES QUE NOS AYUDARAN A IDENTIFICAR LA POSICIÓN DE DONDE ESTAN
@@ -419,7 +405,8 @@ void drawModels(Shader *shader, glm::mat4 view, glm::mat4 projection)
         shader->use();
 
         models[i].Draw(*shader);
-        detectColls(&models[i].collbox, models[i].name, &camera, renderCollBox, collidedObject_callback);
+        
+        (&models[i].collbox, models[i].name, &camera, renderCollBox, collidedObject_callback);
     }
 
     // Personaje principal
@@ -793,20 +780,12 @@ void collisions()
 {
     //TODO LO DE LAS COLISIONES VA AQUÍ
 
-    // Colisiones con la camara (Para que no tope)
+    // Colisiones con la camara / Collboxes (Para que no tope)
     //detectColls(collboxes, &camera, renderCollBox, collidedObject_callback);
 
-    // Colisiones con Yoshi y los modelos (Arquitectura)
-  /*  for (int i = 0; i < models.size(); i++) 
-        detectColls(&models[i].collbox, models[i].name, &Yoshi.cb, Yoshi.name, renderCollBox, collidedModel_callback); 
-    */
-
-    //Colisiones de los enemigos
-    //enemyColls();
-
-    // Coliisiones con los buffs
-    //buffColls();
-
+    // Colisiones con la camara y el Vector Models
+    detectColls(models, &camera, renderCollBox, collidedModel_callback);
+   
 }
 
 
