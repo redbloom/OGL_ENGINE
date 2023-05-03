@@ -123,10 +123,10 @@ int indexCollBox = 0;
 int indexLight = 0;
 
 bool isCollBoxModel = false;
-bool renderCollBox = false;
+bool renderCollBox = true;
 bool renderLightingCubes = false;
 float angleObjects = 0.0f;
-float movement = 0.01;
+float movement = 0.05;
 
 //::::::::::::::ARREGLOS DE OBJETOS:::::::::::::://
 vector<glm::vec3> pointLightPositions;

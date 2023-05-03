@@ -94,10 +94,6 @@ int main()
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
 
- 
-        // Update map
-        //enemiesMap();
-        //buffsMap();
 
         //:::: RENDER DE MODELOS:::://
         drawModels(&ourShader, view, projection);
@@ -108,10 +104,10 @@ int main()
         loadEnviroment(&terrain, &sky, view, projection);
 
         //:::: AGUA :::://
-        //drawWater(view, projection);
+        drawWater(view, projection);
 
         //:::: PARTICLES :::://
-        //drawParticles(view, projection);
+        drawParticles(view, projection);
 
         //:::: BILLBOARDS :::://
         //drawBillboard();
@@ -121,9 +117,6 @@ int main()
 
         //:::: COLISIONES :::://
         collisions();
-
-        // HP check
-        //hpCheck();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -218,53 +211,81 @@ void initScene(Shader ourShader)
 
     //Definimos los collbox de la camara
     camera.setCollBox();
-    //scaleCollBox = camera.collbox.getScale();
-    //scaleCollBox.x -= 0.8;
-    //scaleCollBox.z -= 0.8;
-    //scaleCollBox.y += 1.0;
-    //camera.collbox.setScale(scaleCollBox);
+    scaleCollBox = camera.collbox.getScale();
+    scaleCollBox.x += 0.3;
+    scaleCollBox.z += 0.3;
+    scaleCollBox.y += 2.1;
+    camera.collbox.setScale(scaleCollBox);
+    camera.Position.y = 2.1f;
     camPos = camera.Position;
+    camera.collbox.setPosition(camPos);
+    camera.collbox2.setPosition(camPos);
+    camera.collbox.defineCollisionBox();
+    camera.collbox2.defineCollisionBox();
+
 
     //:::: CARGAMOS LOS SHADERS :::://
     ourShader.use();
 
     //:::: INICIALIZAMOS NUESTROS MODELOS :::://   
-    // Crustaceo
-    models.push_back(Model("KrustyKrab", "models/KrustyKrab/KrustyKrab.obj", glm::vec3(18, 0.0, 2.7), glm::vec3(0, -90, 0), 0.0f, initScale));
-    models.push_back(Model("KrustySign", "models/KrustySign/KrustySign.obj", glm::vec3(16, -0.1, 14.2), glm::vec3(0, -90, 0), 0.0f, initScale));
-    models.push_back(Model("hourSign", "models/24hoursign/24hoursign.obj", glm::vec3(12.5, 1.6, 6.4), glm::vec3(0, -90, 0), 0.0f, initScale));
+    models.push_back(Model("mcDonalds", "models/mcDonalds/mcDonalds2.obj", glm::vec3(22, -0.78, 2.7), glm::vec3(0, -90, 0), 0.0f, initScale));
 
     // Muebles 
-    models.push_back(Model("Boat", "models/Boat/Boat.obj", glm::vec3(22.4, 0.1, 2.7), glm::vec3(0, -90, 0), 0.0f, initScale));
-    models.push_back(Model("Menu", "models/Menu/Menu.obj", glm::vec3(22.4, 1.6, 2.7), glm::vec3(0, -90, 0), 0.0f, initScale));
-    models.push_back(Model("Table01", "models/Seats/Seats.obj", glm::vec3(18.5, -0.1, -1.1), glm::vec3(0, -180, 0), 0.0f, 0.18f));
-    models.push_back(Model("Table02", "models/Seats/Seats.obj", glm::vec3(15.0, -0.1, -1.1), glm::vec3(0, -180, 0), 0.0f, 0.18f));
-    models.push_back(Model("Table03", "models/Seats/Seats.obj", glm::vec3(18.5, -0.1, 7.06), glm::vec3(0, 0, 0), 0.0f, 0.18f));
-    models.push_back(Model("Table04", "models/Seats/Seats.obj", glm::vec3(15.0, -0.1, 7.06), glm::vec3(0, 0, 0), 0.0f, 0.18f));
-    models.push_back(Model("vendingMachine", "models/vendingMachine/vendingMachine.obj", glm::vec3(24.3, -0.1, -1.5), glm::vec3(0, -90, 0), 0.0f, 0.18f));
-    models.push_back(Model("Arcade", "models/Arcade/Arcade.obj", glm::vec3(24.3, -0.1, 0.3), glm::vec3(0, -90, 0), 0.0f, 0.18f));
-    models.push_back(Model("Bin", "models/Bin/Bin.obj", glm::vec3(24.3, -0.1, 5.4), glm::vec3(0, -90, 0), 0.0f, 0.18f));
-    models.push_back(Model("Jukebox", "models/Jukebox/Jukebox.obj", glm::vec3(24.3, -0.1, 6.9), glm::vec3(0, -90, 0), 0.0f, 0.18f));
+    models.push_back(Model("Counter", "models/Counter/Counter.obj", glm::vec3(23, 0.2, 1.5), glm::vec3(0, -90, 0), 0.0f, 0.13f));
 
-    // Objetos
-    // En mesa 1
-    models.push_back(Model("Burger", "models/Burger/Burger.obj", glm::vec3(18.5, 0.8, -0.7), glm::vec3(0, 0, 0), 0.0f, 0.18f));
-    // En mesa 2
-    models.push_back(Model("Soda", "models/Soda/Soda.obj", glm::vec3(15.0, 0.8, -0.9), glm::vec3(0, 0, 0), 0.0f, 0.18f));
-    // En mesa 3
-    models.push_back(Model("Notebook", "models/Notebook/Notebook.obj", glm::vec3(18.5, 0.8, 6.4), glm::vec3(0, -45, 0), 0.0f, 0.12f));
+    models.push_back(Model("Seat01", "models/Counter/Seat.obj", glm::vec3(20.7, 0.2, -0.2), glm::vec3(0, -90, 0), 0.0f, 0.125f));
+    models.push_back(Model("Seat02", "models/Counter/Seat.obj", glm::vec3(20.7, 0.2, 0.8), glm::vec3(0, -90, 0), 0.0f, 0.125f));
+    models.push_back(Model("Seat03", "models/Counter/Seat.obj", glm::vec3(20.7, 0.2, 1.8), glm::vec3(0, -90, 0), 0.0f, 0.125f));
+    models.push_back(Model("Seat04", "models/Counter/Seat.obj", glm::vec3(20.7, 0.2, 2.8), glm::vec3(0, -90, 0), 0.0f, 0.125f));
+    models.push_back(Model("Seat05", "models/Counter/Seat.obj", glm::vec3(21.1, 0.2, 3.8), glm::vec3(0, -90, 0), 0.0f, 0.125f));
+
+    models.push_back(Model("Fridge", "models/Counter/Fridge.obj", glm::vec3(27.8, 0.2, -0.8), glm::vec3(0, -90, 0), 0.0f, 0.16f));
+    models.push_back(Model("Fryer", "models/Counter/Fryer.obj", glm::vec3(27.8, 0.2, 0.9), glm::vec3(0, -90, 0), 0.0f, 0.145f));
+    models.push_back(Model("Stove", "models/Counter/Stove.obj", glm::vec3(27.8, 0.2, 2.5), glm::vec3(0, -90, 0), 0.0f, 0.145f));
+
+    models.push_back(Model("sodaMachine", "models/sodaMachine/sodaMachine.obj", glm::vec3(27.8, 0.2, 6.8), glm::vec3(0, -90, 0), 0.0f, 0.16f));
+    models.push_back(Model("sodaMachine", "models/Jukebox/Jukebox.obj", glm::vec3(27.8, 0.2, 9.0), glm::vec3(0, -90, 0), 0.0f, 0.16f));
+
+    models.push_back(Model("Bin01", "models/Bin/Bin.obj", glm::vec3(24.8, 0.2, 9.5), glm::vec3(0, -90, 0), 0.0f, 0.145f));
+    models.push_back(Model("Bin02", "models/Bin/Bin.obj", glm::vec3(23.8, 0.2, 9.5), glm::vec3(0, -90, 0), 0.0f, 0.145f));
+
+    //z: 10.2
+
+    models.push_back(Model("Table01", "models/Table/Table.obj", glm::vec3(15.45, 0.2, 1.0), glm::vec3(0, -90, 0), 0.0f, 0.16f));
+    models.push_back(Model("Table02", "models/Table/Table.obj", glm::vec3(15.46, 0.2, 8.6), glm::vec3(0, 0, 0), 0.0f, 0.16f));
+    models.push_back(Model("Table03", "models/Table/Table.obj", glm::vec3(19.75, 0.2, 8.6), glm::vec3(0, 0, 0), 0.0f, 0.16f));
+
+    //// Objetos en mesa Y: 0.8
+    models.push_back(Model("botesTable", "models/Table/Botes.obj", glm::vec3(16.15, 1.4, 1.25), glm::vec3(0, -75, 0), 0.0f, 0.16f));
+    models.push_back(Model("burgerTable", "models/Table/Burger.obj", glm::vec3(15.4, 1.35, 7.8), glm::vec3(0, -45, 0), 0.0f, 0.16f));
+    models.push_back(Model("Notebook", "models/Notebook/Notebook.obj", glm::vec3(19.8, 1.3, 7.8), glm::vec3(0, -45, 0), 0.0f, 0.12f));
+
+    // Objetos en el mostrador
+    models.push_back(Model("burgerThing", "models/Counter/burgerThing.obj", glm::vec3(22.65, 1.5, 2.7), glm::vec3(0, -90, 0), 0.0f, 0.13f));
+    models.push_back(Model("botesCounter", "models/Table/Botes.obj", glm::vec3(22.6, 1.5, 1.25), glm::vec3(0, -75, 0), 0.0f, 0.16f));
+    models.push_back(Model("burgerCounter", "models/Table/Burger.obj", glm::vec3(22.45, 1.5, 0.65), glm::vec3(0, -90, 0), 0.0f, 0.16f));
 
     // Fuera
     models.push_back(Model("fireHydr", "models/fireHydr/fireHydr.obj", glm::vec3(5.2, -0.1, 9.47), glm::vec3(0, -90, 0), 0.0f, 0.18f));
-    //models.push_back(Model("volkswagenGolf", "models/volkswagenGolf/volkswagenGolf.obj", glm::vec3(19.89, -0.15, 18.3), glm::vec3(0, -90, 0), 0.0f, 0.063f));
-    //models.push_back(Model("sportsCar", "models/sportsCar/sportsCar.obj", glm::vec3(20.19, -0.1, 20.9), glm::vec3(0, -90, 0), 0.0f, 0.08f));
-    //models.push_back(Model("Trash", "models/Trash/Trash.obj", glm::vec3(21.78, -0.1, 12.24), glm::vec3(0, 0, 0), 0.0f, 0.35f));
+    models.push_back(Model("volkswagenGolf", "models/volkswagenGolf/volkswagenGolf.obj", glm::vec3(19.89, -0.15, 18.3), glm::vec3(0, -90, 0), 0.0f, 0.073f));
+    models.push_back(Model("Trash", "models/Trash/Trash.obj", glm::vec3(21.78, -0.1, 14.4), glm::vec3(0, 0, 0), 0.0f, 0.35f));
 
+   
+     for (int i = 0; i < models.size(); i++)
+     {
+         if (models[i].name == "Counter") {
+             scaleCollBox = models[i].collbox.getScale();
+             scaleCollBox.x -= 0.48;
+             scaleCollBox.z += 0.8;
+             models[i].collbox.setScale(scaleCollBox);
+             models[i].collbox.defineCollisionBox();
+         }
+     }
 
 
     // Puertas
-    doorL.setInitModel();
-    doorR.setInitModel();
+    //doorL.setInitModel();
+    //doorR.setInitModel();
 
     // Yoshi
     //Yoshi.setInitModel();
@@ -275,8 +296,10 @@ void initScene(Shader ourShader)
     CollisionBox collbox;
     glm::vec4 colorCollbox(0.41f, 0.2f, 0.737f, 0.06f);
                                         // Lugar                  //Escala
-    collbox = CollisionBox(glm::vec3(-2.1f, -0.2f, 3.0f), glm::vec3(2.27, 3, 12.6), colorCollbox);
-    collboxes.insert(pair<int, pair<string, CollisionBox>>(0, pair<string, CollisionBox>("cbBarrier1", collbox)));
+    collbox = CollisionBox(glm::vec3(11.54, -0.2f, -1.5f), glm::vec3(0.5, 3, 2.75), colorCollbox);
+    collboxes.insert(pair<int, pair<string, CollisionBox>>(0, pair<string, CollisionBox>("Pared1", collbox)));
+    collbox = CollisionBox(glm::vec3(11.54, -0.2f, 7.1f), glm::vec3(0.5, 3, 2.75), colorCollbox);
+    collboxes.insert(pair<int, pair<string, CollisionBox>>(1, pair<string, CollisionBox>("Pared2", collbox)));
 
 
     //CREAMOS LOS LIGHTCUBES QUE ENREALIDAD SON COLLISION BOXES QUE NOS AYUDARAN A IDENTIFICAR LA POSICIÓN DE DONDE ESTAN
@@ -395,8 +418,8 @@ void drawModels(Shader *shader, glm::mat4 view, glm::mat4 projection)
     setMultipleLight(shader, pointLightPositions);  
 
     // Puertas
-    doorL.Slide(*shader);
-    doorR.Slide(*shader);
+    //doorL.Slide(*shader);
+    //doorR.Slide(*shader);
 
     // Arquitectura
     for (int i = 0; i < models.size(); i++)
@@ -702,79 +725,10 @@ void enemyColls() {
 
     //}
 
-    //// billBala
-    //for (int i = 0; i < sizeBB; i++)
-    //{
-    //    if (bbList[i].isDefeated or !bbList[i].bDraw)
-    //        continue;
-    //    actualBB = &bbList[i];
-    //    // yoshiEgg
-    //    detectColls(&Egg.model.collbox, actualBB->name, &actualBB->cb, renderCollBox, collidedEgg_callback);
-    //    // Yoshi
-    //    detectColls(&actualBB->cb, actualBB->name, &Yoshi.cb, Yoshi.name, renderCollBox, collidedEnemy_callback);
-    //    if (!enemyCollidedPlayer) {
-    //        actualBB->enemCollPlayer = false;
-    //        if (!actualBB->itArrived)
-    //            actualBB->isMoving = true;  // Si no colisiono con Yoshi y no ha llegado al destino, entonces seguira su camino
-    //    }
-    //    else
-    //        actualBB->enemCollPlayer = true;
-
-    //}
-
-    //// Blooper
-    //for (int i = 0; i < sizeBL; i++)
-    //{
-    //    if (blList[i].isDefeated or !blList[i].bDraw)
-    //        continue;
-    //    actualBL = &blList[i];
-    //    // yoshiEgg
-    //    detectColls(&Egg.model.collbox, actualBL->name, &actualBL->cb, renderCollBox, collidedEgg_callback);
-    //    // Yoshi
-    //    detectColls(&actualBL->cb, actualBL->name, &Yoshi.cb, Yoshi.name, renderCollBox, collidedEnemy_callback);
-    //    if (!enemyCollidedPlayer) {
-    //        actualBL->enemCollPlayer = false;
-    //        if (!actualBL->itArrived)
-    //            actualBL->isMoving = true;  // Si no colisiono con Yoshi y no ha llegado al destino, entonces seguira su camino
-    //    }
-    //    else
-    //        actualBL->enemCollPlayer = true;
-    //}
+   
 
 }
 
-void buffColls() {
-
-    //// Star
-    //for (int i = 0; i < sizeStar; i++)
-    //{
-    //    if (starList[i].isPicked or !starList[i].bDraw)
-    //        continue;
-    //    actualStar = &starList[i];
-    //    detectColls(&actualStar->cb, actualStar->name, &Yoshi.cb, Yoshi.name, renderCollBox, collidedBuff_callback);
-
-    //}
-
-    //// Coin
-    //for (int i = 0; i < sizeCoin; i++)
-    //{
-    //    if (coinList[i].isPicked or !coinList[i].bDraw)
-    //        continue;
-    //    actualCoin = &coinList[i];
-    //    detectColls(&actualCoin->cb, actualCoin->name, &Yoshi.cb, Yoshi.name, renderCollBox, collidedBuff_callback);
-
-    //}
-
-    //// Heart
-    //for (int i = 0; i < sizeHeart; i++)
-    //{
-    //    if (heartList[i].isPicked or !heartList[i].bDraw)
-    //        continue;
-    //    actualHeart = &heartList[i];
-    //    detectColls(&actualHeart->cb, actualHeart->name, &Yoshi.cb, Yoshi.name, renderCollBox, collidedBuff_callback);
-
-    //}
-}
 
 void collisions()
 {

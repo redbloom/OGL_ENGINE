@@ -30,6 +30,7 @@ struct stopCam {
     bool Right = false;
 };
 bool isCollision = false;
+bool isCollbox = false;
 bool enemyCollidedPlayer = false;
 
 // An abstract camera class that processes input and calculates the corresponding Euler Angles, Vectors and Matrices for use in OpenGL

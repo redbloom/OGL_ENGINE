@@ -104,6 +104,7 @@ void detectColls(map<int, pair<string, CollisionBox>> collboxes, Camera *cam, bo
         if (intersect(colls.second.second, cam->collbox)) {
             callback(colls.second.first);
             // Si llego a colisionar con algo, entonces
+            itCollided = true;
         }
         if (intersect(colls.second.second, cam->collbox2))
             cam->notFrontMove = true;
@@ -112,9 +113,9 @@ void detectColls(map<int, pair<string, CollisionBox>> collboxes, Camera *cam, bo
     }
 
     if (!itCollided)
-        isCollision = false;
+        isCollbox = false;
     else
-        isCollision = true;
+        isCollbox = true;
 }
 
 

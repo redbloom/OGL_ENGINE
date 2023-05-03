@@ -1,0 +1,20 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 30.04.2023 23:55:54
+
+newmtl openseamachine
+	Ns 36.0334
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.8000 0.8000 0.8000
+	Ks 0.1012 0.1012 0.1012
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Basecolor_0.jpg
+	map_Kd Basecolor_0.jpg
+	map_Ke Basecolor_0.jpg
+	map_bump normalmap_texture_Normal_Bump.tga
+	bump normalmap_texture_Normal_Bump.tga
+	map_refl Map__19_Reflect_Refract.tga

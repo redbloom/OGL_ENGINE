@@ -1,13 +1,12 @@
-
 #include <engine/utils.h>
 #include <engine/variables.h>
 
 
 //:::: CALLBACKS  Y FUNCIONES :::://
-void framebuffer_size_callback(GLFWwindow *window, int width, int height);
-void mouse_callback(GLFWwindow *window, double xpos, double ypos);
-void mouse_button_callback(GLFWwindow *window, int button, int action, int mods);
-void scroll_callback(GLFWwindow *window, double xoffset, double yoffset);
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void collidedObject_callback(string nameCollidedObject);
 void collidedModel_callback(string nameCollidedObject);
 void collidedEgg_callback(string nameCollidedObject);
@@ -17,14 +16,14 @@ void collidedBuff_callback(string nameCollidedObject);
 
 
 void joystick_callback(int jid, int event);
-void processInput(GLFWwindow *window);
+void processInput(GLFWwindow* window);
 void rotateCamInput(double xoff, double yoff);
-void actionKeys(GLFWwindow *window);
+void actionKeys(GLFWwindow* window);
 
-void setMultipleLight(Shader *shader, vector<glm::vec3> pointLightPositions);
-void setSimpleLight(Shader *shader);
-void drawModels(Shader *shader, glm::mat4 view, glm::mat4 projection);
-void loadEnviroment(Terrain *terrain, SkyBox *sky, glm::mat4 view, glm::mat4 projection);
+void setMultipleLight(Shader* shader, vector<glm::vec3> pointLightPositions);
+void setSimpleLight(Shader* shader);
+void drawModels(Shader* shader, glm::mat4 view, glm::mat4 projection);
+void loadEnviroment(Terrain* terrain, SkyBox* sky, glm::mat4 view, glm::mat4 projection);
 void initScene(Shader ourShader);
 void collisions();
 void drawWater(glm::mat4, glm::mat4);
@@ -87,7 +86,6 @@ void processInput(GLFWwindow* window)
             }
 
             if (state.buttons[GLFW_GAMEPAD_BUTTON_A] == GLFW_PRESS) {
-                //Yoshi.isPunching = true;
             }
 
             if (state.buttons[GLFW_GAMEPAD_BUTTON_B] == GLFW_PRESS) {
@@ -161,15 +159,13 @@ void processInput(GLFWwindow* window)
             right();
         }
         if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-            //Yoshi.isPunching = true;
         }
         if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
         {
             cout << endl;
-            //posModel = Yoshi.model.getPosition();
-            //cout << "PosModel: \n X:" << posModel.x << "\t Z:" << posModel.z << endl;
             posModel = camera.collbox.getPosition();
-            cout << "PosCam: \n X:" << posModel.x << "\t Z:" << posModel.z << endl;
+            cout << "PosCam: \n X:" << posModel.x << "\n Z:" << posModel.z << endl;
+            //cout << "\nAngle:" << camera.Pitch;
         }
 
         isJoyStick = false;
@@ -178,8 +174,8 @@ void processInput(GLFWwindow* window)
             glfwSetWindowShouldClose(window, true);
     }
 }
-void actionKeys(GLFWwindow *window)
-{   
+void actionKeys(GLFWwindow* window)
+{
     if (typemenu == OBJECTS || typemenu == COLLISION)
     {
         if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
@@ -195,7 +191,7 @@ void actionKeys(GLFWwindow *window)
 
     if (typemenu == GAME)
     {
-       //ACCIONES DE USTEDES
+        //ACCIONES DE USTEDES
     }
     else if (typemenu == OBJECTS)
     {
@@ -203,7 +199,7 @@ void actionKeys(GLFWwindow *window)
 
         if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
         {
-            if (indexObject < models.size()-1)
+            if (indexObject < models.size() - 1)
             {
                 indexObject += 1;
             }
@@ -318,7 +314,7 @@ void actionKeys(GLFWwindow *window)
         //::::::::::::::MOVER LUCES:::::::::::::://
         if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
         {
-            const char *lightTypes[] = {"FLAT", "ALL", "DIRECTIONAL", "SPOT", "POINT"};
+            const char* lightTypes[] = { "FLAT", "ALL", "DIRECTIONAL", "SPOT", "POINT" };
             int lt = (int)lightType;
             lt += 1;
             if (lt > 4)
@@ -433,7 +429,7 @@ void actionKeys(GLFWwindow *window)
         }
 
         if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-        {      
+        {
             if (indexCollBox < size)
             {
                 string name = isCollBoxModel ? models[indexCollBox].name : collboxes.at(indexCollBox).first;
@@ -528,7 +524,7 @@ void actionKeys(GLFWwindow *window)
         if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
         {
             cout << "\nCollisionBox collbox;" << endl;
-           
+
             if (transformObject == COLLBOX)
             {
                 int i = 0;
@@ -544,7 +540,7 @@ void actionKeys(GLFWwindow *window)
             }
             else if (transformObject == MODEL)
             {
-                for (int i=0; i<models.size(); i++)
+                for (int i = 0; i < models.size(); i++)
                 {
                     string name = models[i].name;
                     glm::vec3 mPos = models[i].collbox.getPosition();
@@ -553,11 +549,11 @@ void actionKeys(GLFWwindow *window)
                         << "\nmodels[" << i << "].collbox.setScale(glm::vec3(" << mScale.x << "," << mScale.y << "," << mScale.z << "));"
                         << "\nmodels[" << i << "].collbox.defineCollisionBox();" << endl;
 
-                   
-                }              
+
+                }
             }
-            
-           
+
+
         }
     }
 }
@@ -579,17 +575,12 @@ void rotateCamInput(double xoff, double yoff)
     lastX = xJoy;
     lastY = yJoy;
 
-    //Rotar
-    //rotationModel = Yoshi.model.getAngles();
-    //camYaw = (camera.Yaw * -1) + 90;
-    //rotationModel.y = camYaw;
-    //Yoshi.updateAngles(rotationModel);
-
     camera.ProcessMouseMovement(xoffset, yoffset);
 }
+
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow *window, int width, int height)
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     // make sure the viewport matches the new window dimensions; note that width and
     // height will be significantly larger than specified on retina displays.
@@ -598,7 +589,7 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 
 // glfw: whenever the mouse moves, this callback is called
 // -------------------------------------------------------
-void mouse_callback(GLFWwindow *window, double xpos, double ypos)
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
     if (!isJoyStick)
     {
@@ -610,35 +601,28 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos)
             firstMouse = false;
         }
 
-        float xoffset = xpos - lastX;                                                          // RIGHT
-        float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top    // LEFT
+        float xoffset = xpos - lastX;
+        float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
 
-        //Rotar
-        //rotationModel = Yoshi.model.getAngles();
-        //camYaw = (camera.Yaw * -1) + 90;
-        //rotationModel.y = camYaw;
-        //Yoshi.updateAngles(rotationModel);
-        
         lastX = xpos;
         lastY = ypos;
-        
+
         camera.ProcessMouseMovement(xoffset, yoffset);
     }
 }
 
-void mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
     auto pos = camera.Position;
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
     {
-       //ACCIÓN
-        //Yoshi.isPunching = true;
+        //ACCIÓN
     }
 }
 
 // glfw: whenever the mouse scroll wheel scrolls, this callback is called
 // ----------------------------------------------------------------------
-void scroll_callback(GLFWwindow *window, double xoffset, double yoffset)
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     camera.ProcessMouseScroll(yoffset);
 }
@@ -650,7 +634,7 @@ void scroll_callback(GLFWwindow *window, double xoffset, double yoffset)
 void collidedObject_callback(string nameCollidedObject) // Camara - collboxes
 {
     //SI OCURRE UNA COLISIÓN HACEMOS ALGO
-   
+
     // Collboxes
     int i = 0;
     for (pair<int, pair<string, CollisionBox>> colls : collboxes)
@@ -659,11 +643,11 @@ void collidedObject_callback(string nameCollidedObject) // Camara - collboxes
         if (name == nameCollidedObject) {
 
             collisionSide(colls.second.second, camera.collbox);
-            
+
         }
 
     }
- 
+
 }
 
 
@@ -675,9 +659,34 @@ void collidedModel_callback(string nameCollidedObject) {
         string name = models[i].name;
         if (name == nameCollidedObject) {
 
-            if (nameCollidedObject == "KrustyKrab" || nameCollidedObject == "Menu") {
+            if (nameCollidedObject == "mcDonalds") {
                 return;
             }
+
+            if (nameCollidedObject == "botesTable") {
+                return;
+            }
+
+            if (nameCollidedObject == "burgerTable") {
+                return;
+            }
+
+            if (nameCollidedObject == "Notebook") {
+                return;
+            }
+
+            if (nameCollidedObject == "burgerThing") {
+                return;
+            }
+
+            if (nameCollidedObject == "botesCounter") {
+                return;
+            }
+
+            if (nameCollidedObject == "burgerCounter") {
+                return;
+            }
+
             //Para bloquear el paso con los modelos
             collisionSide(models[i].collbox, camera.collbox);
 
@@ -728,9 +737,6 @@ void collisionSide(CollisionBox modelCb, CollisionBox collidedObj) {
 // Procesa el movimiento de la camara
 void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime, stopCam& stop)
 {
-    //if (Yoshi.isPunching)
-    //    return;
-
     // Creamos una variable que guarde la posicion de la camara antes de modificarse
     glm::vec3 antPos = Position;
     // Luego igualamos la Posicion a la futura posicion de la camara (los valores se obtuvieron al presionar una tecla)
@@ -739,7 +745,7 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime, stopCam
     float velocity = MovementSpeed * deltaTime;
 
     // Ejecutamos el movimiento
-    if (direction == FORWARD) {
+    if (direction == FORWARD && notFrontMove == false) {
         Position += Front * velocity;
     }
     if (direction == BACKWARD) {
@@ -751,8 +757,9 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime, stopCam
     if (direction == RIGHT) {
         Position += Right * velocity;
     }
-
-    Position.y = 1.0f;
+    
+    Position.y = 2.1f; // Para que no suba ni baje
+        
 
     // Checamos si no colisiono con algun objeto
     collisions();
@@ -769,27 +776,23 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime, stopCam
     // ejecutamos el cambio. 
     if (stop.Back && direction == BACKWARD) {
         Position = antPos; // Regresamos a la posicion anterior
-        camPos = Position;
         return;
     }
     if (stop.Front && direction == FORWARD) {
         Position = antPos;
-        camPos = Position;
         return;
     }
     if (stop.Right && direction == RIGHT) {
         Position = antPos;
-        camPos = Position;
         return;
     }
     if (stop.Left && direction == LEFT) {
         Position = antPos;
-        camPos = Position;
         return;
     }
 
     // De no ser asi, seteamos la nueva posicion de nuestra camara.
-    camPos = Position;
+    Position = camPos;
     collbox.setPosition(Position);
     collbox2.setPosition(Position);
     collbox.defineCollisionBox();
@@ -801,15 +804,20 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime, stopCam
 // MOVIMIENTOS DE LA CAMARA
 
 void foward() {
-   camPos = camera.Position;
-   camPos.x += movement;
-   camera.ProcessKeyboard(FORWARD, deltaTime, stop);
-   skyPos += camera.Front * glm::vec3(2);
+    //Tomo la posicion de la camara
+    camPos = camera.Position;
+    // Muevo la camara
+    camPos.x += movement;
+    camera.ProcessKeyboard(FORWARD, deltaTime, stop);
+    skyPos += camera.Front * glm::vec3(2);
 
 }
 
 void backward() {
+
+    //Tomo la posicion de la camara
     camPos = camera.Position;
+    // Muevo la camara
     camPos.x -= movement;
     camera.ProcessKeyboard(BACKWARD, deltaTime, stop);
     skyPos -= camera.Front * glm::vec3(2);
@@ -817,17 +825,21 @@ void backward() {
 }
 
 void left() {
+
+    //Tomo la posicion de la camara
     camPos = camera.Position;
+    // Muevo la camara
     camPos.z -= movement;
     camera.ProcessKeyboard(LEFT, deltaTime, stop);
     skyPos -= camera.Right * glm::vec3(2);
-    
-    
+
+
 }
 
 void right() {
-
+    //Tomo la posicion de la camara
     camPos = camera.Position;
+    // Muevo la camara
     camPos.z += movement;
     camera.ProcessKeyboard(RIGHT, deltaTime, stop);
     skyPos -= camera.Right * glm::vec3(2);
