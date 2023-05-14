@@ -162,6 +162,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="buffType.h" />
     <ClInclude Include="Enemies.h" />
+    <ClInclude Include="gameManager.h" />
     <ClInclude Include="gameMap.h" />
     <ClInclude Include="include\engine\Billboard.h" />
     <ClInclude Include="include\engine\camera.h" />

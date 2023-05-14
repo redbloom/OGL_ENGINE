@@ -7,12 +7,12 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+
+// Modelos
 void collidedObject_callback(string nameCollidedObject);
 void collidedModel_callback(string nameCollidedObject);
-void collidedEgg_callback(string nameCollidedObject);
-void collidedEnemy_callback(string nameCollidedObject);
-void collidedBuff_callback(string nameCollidedObject);
-
+void collidedDoor_callback(string nameCollidedObject);
+void modifyModels();
 
 
 void joystick_callback(int jid, int event);
@@ -89,7 +89,7 @@ void processInput(GLFWwindow* window)
             }
 
             if (state.buttons[GLFW_GAMEPAD_BUTTON_B] == GLFW_PRESS) {
-                gameStarted = true;
+                //gameStarted = true;
             }
 
             if (state.axes[GLFW_GAMEPAD_AXIS_RIGHT_X] == 1)
@@ -139,33 +139,153 @@ void processInput(GLFWwindow* window)
 
         if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
         {
-            gameStarted = true;
+            //gameStarted = true;
         }
 
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         {
-            foward();
+            if(!interactingWithObject)
+                foward();
         }
         if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
         {
-            backward();
+            if (!interactingWithObject)
+                backward();
         }
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
         {
-            left();
+            if (!interactingWithObject)
+                left();
         }
         if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         {
-            right();
+            if (!interactingWithObject)
+                right();
         }
         if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+
+            if(!clickOneTime) {
+                if (!interactingWithObject && collidedObject) {
+                    clickOneTime = true;
+                    interactingWithObject = true;
+                    stopGettingInfo = false;
+                }
+            }
         }
+        if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS) {
+
+            if (interactingWithObject && !stopGettingInfo) {
+                stopGettingInfo = true;
+            }
+
+        }
+
         if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
         {
             cout << endl;
             posModel = camera.collbox.getPosition();
-            cout << "PosCam: \n X:" << posModel.x << "\n Z:" << posModel.z << endl;
+            cout << "PosCam:" << endl;
+            cout << "(" << posModel.x << ", -0.2, " << posModel.z << ")";
             //cout << "\nAngle:" << camera.Pitch;
+        }
+        if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
+        {
+            minScale = camera.collbox.getPosition();
+        }
+        if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS)
+        {
+            maxScale = camera.collbox.getPosition();
+        }
+        if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
+        {
+            cout << endl;
+            if (minScale.z == maxScale.z)
+                return;
+
+            float minZ = minScale.z;
+            float maxZ = maxScale.z;
+
+
+            bool maxNegative, minNegative = false;
+
+            float result;
+            if (minZ < 0 && maxZ < 0) {
+                minZ *= -1;
+                maxZ = maxZ *= -1;
+
+                if (minZ < maxZ)
+                    result = maxZ - minZ;
+                else
+                    result = minZ - maxZ;
+            }
+            else if (maxZ < 0) {
+                minZ *= -1;
+                result = maxZ + minZ;
+                result *= -1;
+            }
+            else if (minZ < 0) {
+                maxZ *= -1;
+                result = maxZ + minZ;
+                result *= -1;
+            }
+            else {
+                if (minZ < maxZ)
+                    result = maxZ - minZ;
+                else
+                    result = minZ - maxZ;
+            }
+
+            
+            result /= 2;
+
+            cout << "ScaleZ:" << endl;
+            cout << result;
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
+        {
+            cout << endl;
+            if (minScale.x == maxScale.x)
+                return;
+
+            float minX = minScale.x;
+            float maxX = maxScale.x;
+
+
+            bool maxNegative, minNegative = false;
+
+            float result;
+            if (minX < 0 && maxX < 0) {
+                minX *= -1;
+                maxX = maxX *= -1;
+
+                if (minX < maxX)
+                    result = maxX - minX;
+                else
+                    result = minX - maxX;
+            }
+            else if (maxX < 0) {
+                minX *= -1;
+                result = maxX + minX;
+                result *= -1;
+            }
+            else if (minX < 0) {
+                maxX *= -1;
+                result = maxX + minX;
+                result *= -1;
+            }
+            else {
+                if (minX < maxX)
+                    result = maxX - minX;
+                else
+                    result = minX - maxX;
+            }
+
+
+            result /= 2;
+
+            cout << "ScaleX:" << endl;
+            cout << result;
         }
 
         isJoyStick = false;
@@ -653,42 +773,77 @@ void collidedObject_callback(string nameCollidedObject) // Camara - collboxes
 
 void collidedModel_callback(string nameCollidedObject) {
 
+    bool alreadyCollidedWithInt = false;
+
     // Modelos
     for (int i = 0; i < models.size(); i++)
     {
         string name = models[i].name;
         if (name == nameCollidedObject) {
 
-            if (nameCollidedObject == "mcDonalds") {
-                return;
+            collidedObject = true;
+
+            if (nameCollidedObject != "mcDonalds" && nameCollidedObject != "botesTable"
+                && nameCollidedObject != "burgerTable" && nameCollidedObject != "Notebook"
+                && nameCollidedObject != "burgerThing" && nameCollidedObject != "botesCounter"
+                && nameCollidedObject != "burgerCounter") {
+                //Para bloquear el paso con los modelos
+                collisionSide(models[i].collbox, camera.collbox);
+
             }
 
-            if (nameCollidedObject == "botesTable") {
+            if (models[i].name == "Counter")
                 return;
-            }
 
-            if (nameCollidedObject == "burgerTable") {
-                return;
-            }
+            // Si el usuario encontro un digito...
+            if (models[i].digitCode != NONE) {
 
-            if (nameCollidedObject == "Notebook") {
-                return;
-            }
+                // Si el usuario presiono Q entonces se muestra que digito encontro
+                if (interactingWithObject) {
 
-            if (nameCollidedObject == "burgerThing") {
-                return;
-            }
+                    if (!oneObjAtTime) {
+                        oneObjAtTime = true;
+                        digitFound = true;
+                        lastObjectInt = i;
+                    }
+                   
+                    // Una vez que el usuario termine de leer, entonces se guarda el digito
+                    if (stopGettingInfo) {
+                        oneObjAtTime = false;
+                       // Guardar digitos
+                        if (!models[lastObjectInt].digitTaken) {
+                            models[lastObjectInt].digitTaken = true;
+                            digitsFound[digitsCounter] = models[lastObjectInt].digitCode;
+                            digitsCounter++;
+                        }
+                        //Liberar tecla
+                        clickOneTime = false;
+                        interactingWithObject = false;
+                    }
+                }
 
-            if (nameCollidedObject == "botesCounter") {
-                return;
-            }
 
-            if (nameCollidedObject == "burgerCounter") {
-                return;
             }
+            else  {
+                if (interactingWithObject) {
 
-            //Para bloquear el paso con los modelos
-            collisionSide(models[i].collbox, camera.collbox);
+
+                    if (!oneObjAtTime) {
+                        oneObjAtTime = true;
+                        digitFound = false;
+                        lastObjectInt = i;
+                    }
+
+                   
+                    if (stopGettingInfo) {
+                        oneObjAtTime = false;
+                        //Liberar tecla
+                        clickOneTime = false;
+                        interactingWithObject = false;
+                    }
+                }
+ 
+            }
 
         }
 
@@ -764,7 +919,8 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime, stopCam
     // Checamos si no colisiono con algun objeto
     collisions();
     // Si no, entonces liberar cualquier movimiento
-    if (!isCollision) {
+    if (!isCollision and !isCollbox) {
+        collidedObject = false;
         stop.Back = false;
         stop.Front = false;
         stop.Left = false;

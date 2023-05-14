@@ -17,8 +17,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "gameMap.h"
 #include "Puertas.h"
+#include "gameManager.h"
 
 enum LightType
 {
@@ -107,6 +107,9 @@ float smokeX, smokeY;
 //:::: VECTORES :::://
 glm::vec3 force(0);
 glm::vec3 posModel(0);
+glm::vec3 minScale(0);
+glm::vec3 maxScale(0);
+glm::vec3 totalScale(0);
 glm::vec3 rotationModel(0);
 glm::vec3 scaleCollBox(0);
 glm::vec3 skyPos(0);
@@ -123,7 +126,7 @@ int indexCollBox = 0;
 int indexLight = 0;
 
 bool isCollBoxModel = false;
-bool renderCollBox = true;
+bool renderCollBox = false;
 bool renderLightingCubes = false;
 float angleObjects = 0.0f;
 float movement = 0.05;
@@ -149,15 +152,17 @@ int indexRigidModel = 0;
 float colDetection = 0;
 
 // ::::::::::::::: GUI ::::::::::::::::::: //
-QuadTexture yoshiIcon, eggIcon, coinIcon, yoshiHP, eggHP;
-QuadTexture dialogBox, coinBox;
+QuadTexture dialogBox, digitBar;
+QuadTexture pauseBtn, acceptBtn;
 QuadTexture rainSprite;
 float rainX = 0.0, rainY = 0.0;
 
 const char* text = "";
 TextRenderer* initGameTxt;
-TextRenderer* gameOverTxt;
-TextRenderer* coinCount;
+TextRenderer* acceptTxt;
+TextRenderer* digitRegTxt;
+TextRenderer* interStatusTxt;
+TextRenderer* objectInfoTxt;
 
 //::::::::::::::::::::: VARIABLES CAMBIO SKYBOX :::::::::::::::::::::::
 int changeSkyBoxTexture = 0;
@@ -172,5 +177,4 @@ int indiHpYoshi, indiHpEgg;
 int initHpYoshi, initHpEgg;
 
 // Puertas
-puertaL doorL;
-puertaR doorR;
+Door door;

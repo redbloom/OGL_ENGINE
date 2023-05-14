@@ -24,6 +24,10 @@ using namespace glm;
 class Model
 {
 public:
+
+    int digitCode;
+    bool digitTaken;
+
     CollisionBox collbox;
     string name;
     string path;
@@ -32,6 +36,23 @@ public:
     vector<Mesh> meshes;
     string directory;
     bool gammaCorrection;
+
+
+    void setDigit(int digit) {
+        this->digitCode = digit;
+    }
+
+    int getDigit() {
+        return this->digitCode;
+    }
+
+    void setDigitStatus(bool value) {
+        this->digitTaken = value;
+    }
+
+    bool getDigitStatus() {
+       return this->digitTaken;
+    }
 
     vec3 getScale()
     {
@@ -91,6 +112,9 @@ public:
     }
     Model(string name, string const &path, glm::vec3 _position, glm::vec3 _angles, float _angle, float _scale, bool withCollbox = true, bool gamma = false) : gammaCorrection(gamma)
     {
+        this->digitCode = 11;
+        this->digitTaken = false;
+
         this->path = path;
         angle = _angle;
         position = _position;

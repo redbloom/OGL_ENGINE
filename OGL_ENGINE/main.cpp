@@ -67,7 +67,7 @@ int main()
     //buffsMap();
     //hpCheck();
 
-    firstTime = false;
+    //firstTime = false;
 
     //:::: RENDER:::://
     while (!glfwWindowShouldClose(window))
@@ -97,8 +97,6 @@ int main()
 
         //:::: RENDER DE MODELOS:::://
         drawModels(&ourShader, view, projection);
-        //loadEnemyAnim(&ourShader);
-        //loadBuffAnim(&ourShader);
 
         //:::: SKYBOX Y TERRENO:::://
         loadEnviroment(&terrain, &sky, view, projection);
@@ -113,7 +111,7 @@ int main()
         //drawBillboard();
 
         // ::::::::::::::: GUI ::::::::::::::::::: //
-        //drawGUI();
+        drawGUI();
 
         //:::: COLISIONES :::://
         collisions();
@@ -140,6 +138,10 @@ int main()
     agua.Release();
     smoke.Release();
     particles.Release();
+
+    dialogBox.Release();
+    digitBar.Release();
+
     //yoshiIcon.Release();
     //eggIcon.Release();
     //coinIcon.Release();
@@ -230,24 +232,25 @@ void initScene(Shader ourShader)
     //:::: INICIALIZAMOS NUESTROS MODELOS :::://   
     models.push_back(Model("mcDonalds", "models/mcDonalds/mcDonalds2.obj", glm::vec3(22, -0.78, 2.7), glm::vec3(0, -90, 0), 0.0f, initScale));
 
-    // Muebles 
+     //Muebles 
     models.push_back(Model("Counter", "models/Counter/Counter.obj", glm::vec3(23, 0.2, 1.5), glm::vec3(0, -90, 0), 0.0f, 0.13f));
 
     models.push_back(Model("Seat01", "models/Counter/Seat.obj", glm::vec3(20.7, 0.2, -0.2), glm::vec3(0, -90, 0), 0.0f, 0.125f));
     models.push_back(Model("Seat02", "models/Counter/Seat.obj", glm::vec3(20.7, 0.2, 0.8), glm::vec3(0, -90, 0), 0.0f, 0.125f));
     models.push_back(Model("Seat03", "models/Counter/Seat.obj", glm::vec3(20.7, 0.2, 1.8), glm::vec3(0, -90, 0), 0.0f, 0.125f));
-    models.push_back(Model("Seat04", "models/Counter/Seat.obj", glm::vec3(20.7, 0.2, 2.8), glm::vec3(0, -90, 0), 0.0f, 0.125f));
-    models.push_back(Model("Seat05", "models/Counter/Seat.obj", glm::vec3(21.1, 0.2, 3.8), glm::vec3(0, -90, 0), 0.0f, 0.125f));
+    //models.push_back(Model("Seat04", "models/Counter/Seat.obj", glm::vec3(20.7, 0.2, 2.8), glm::vec3(0, -90, 0), 0.0f, 0.125f));
+    //models.push_back(Model("Seat05", "models/Counter/Seat.obj", glm::vec3(21.1, 0.2, 3.8), glm::vec3(0, -90, 0), 0.0f, 0.125f));
 
     models.push_back(Model("Fridge", "models/Counter/Fridge.obj", glm::vec3(27.8, 0.2, -0.8), glm::vec3(0, -90, 0), 0.0f, 0.16f));
     models.push_back(Model("Fryer", "models/Counter/Fryer.obj", glm::vec3(27.8, 0.2, 0.9), glm::vec3(0, -90, 0), 0.0f, 0.145f));
     models.push_back(Model("Stove", "models/Counter/Stove.obj", glm::vec3(27.8, 0.2, 2.5), glm::vec3(0, -90, 0), 0.0f, 0.145f));
 
     models.push_back(Model("sodaMachine", "models/sodaMachine/sodaMachine.obj", glm::vec3(27.8, 0.2, 6.8), glm::vec3(0, -90, 0), 0.0f, 0.16f));
-    models.push_back(Model("sodaMachine", "models/Jukebox/Jukebox.obj", glm::vec3(27.8, 0.2, 9.0), glm::vec3(0, -90, 0), 0.0f, 0.16f));
+    models.push_back(Model("Arcade", "models/Arcade/Arcade.obj", glm::vec3(27.8, 0.2, 9.0), glm::vec3(0, -90, 0), 0.0f, 0.16f));
 
-    models.push_back(Model("Bin01", "models/Bin/Bin.obj", glm::vec3(24.8, 0.2, 9.5), glm::vec3(0, -90, 0), 0.0f, 0.145f));
-    models.push_back(Model("Bin02", "models/Bin/Bin.obj", glm::vec3(23.8, 0.2, 9.5), glm::vec3(0, -90, 0), 0.0f, 0.145f));
+
+    models.push_back(Model("Bin01", "models/Bin/Bin.obj", glm::vec3(24.3, 0.2, 9.5), glm::vec3(0, -90, 0), 0.0f, 0.145f));
+    models.push_back(Model("Bin02", "models/Bin/Bin.obj", glm::vec3(23.3, 0.2, 9.5), glm::vec3(0, -90, 0), 0.0f, 0.145f));
 
     //z: 10.2
 
@@ -261,46 +264,35 @@ void initScene(Shader ourShader)
     models.push_back(Model("Notebook", "models/Notebook/Notebook.obj", glm::vec3(19.8, 1.3, 7.8), glm::vec3(0, -45, 0), 0.0f, 0.12f));
 
     // Objetos en el mostrador
-    models.push_back(Model("burgerThing", "models/Counter/burgerThing.obj", glm::vec3(22.65, 1.5, 2.7), glm::vec3(0, -90, 0), 0.0f, 0.13f));
-    models.push_back(Model("botesCounter", "models/Table/Botes.obj", glm::vec3(22.6, 1.5, 1.25), glm::vec3(0, -75, 0), 0.0f, 0.16f));
-    models.push_back(Model("burgerCounter", "models/Table/Burger.obj", glm::vec3(22.45, 1.5, 0.65), glm::vec3(0, -90, 0), 0.0f, 0.16f));
+    models.push_back(Model("burgerThing", "models/Counter/burgerThing.obj", glm::vec3(22.65, 1.5, 3.1), glm::vec3(0, -90, 0), 0.0f, 0.13f));
+    models.push_back(Model("botesCounter", "models/Table/Botes.obj", glm::vec3(22.6, 1.5, 1.65), glm::vec3(0, -75, 0), 0.0f, 0.16f));
+    models.push_back(Model("burgerCounter", "models/Table/Burger.obj", glm::vec3(22.45, 1.5, -0.65), glm::vec3(0, -90, 0), 0.0f, 0.16f));
 
     // Fuera
     models.push_back(Model("fireHydr", "models/fireHydr/fireHydr.obj", glm::vec3(5.2, -0.1, 9.47), glm::vec3(0, -90, 0), 0.0f, 0.18f));
     models.push_back(Model("volkswagenGolf", "models/volkswagenGolf/volkswagenGolf.obj", glm::vec3(19.89, -0.15, 18.3), glm::vec3(0, -90, 0), 0.0f, 0.073f));
     models.push_back(Model("Trash", "models/Trash/Trash.obj", glm::vec3(21.78, -0.1, 14.4), glm::vec3(0, 0, 0), 0.0f, 0.35f));
 
-   
-     for (int i = 0; i < models.size(); i++)
-     {
-         if (models[i].name == "Counter") {
-             scaleCollBox = models[i].collbox.getScale();
-             scaleCollBox.x -= 0.48;
-             scaleCollBox.z += 0.8;
-             models[i].collbox.setScale(scaleCollBox);
-             models[i].collbox.defineCollisionBox();
-         }
-     }
-
+    modifyModels();
 
     // Puertas
-    //doorL.setInitModel();
-    //doorR.setInitModel();
-
-    // Yoshi
-    //Yoshi.setInitModel();
-    //Yoshi.setAnimation();
+     door.setInitModel();
 
 
     //CREAMOS TODAS  LAS CAJAS DE COLISION INDIVIDUALES
     CollisionBox collbox;
     glm::vec4 colorCollbox(0.41f, 0.2f, 0.737f, 0.06f);
                                         // Lugar                  //Escala
-    collbox = CollisionBox(glm::vec3(11.54, -0.2f, -1.5f), glm::vec3(0.5, 3, 2.75), colorCollbox);
+    collbox = CollisionBox(glm::vec3(12.37, -0.2, -1.05), glm::vec3(0.5, 4, 3.325), colorCollbox);
     collboxes.insert(pair<int, pair<string, CollisionBox>>(0, pair<string, CollisionBox>("Pared1", collbox)));
-    collbox = CollisionBox(glm::vec3(11.54, -0.2f, 7.1f), glm::vec3(0.5, 3, 2.75), colorCollbox);
+    collbox = CollisionBox(glm::vec3(12.37, -0.2, 9.6), glm::vec3(0.5, 4, 3.275), colorCollbox);
     collboxes.insert(pair<int, pair<string, CollisionBox>>(1, pair<string, CollisionBox>("Pared2", collbox)));
-
+    collbox = CollisionBox(glm::vec3(22.39, -0.2, 12.1), glm::vec3(8.07, 4, 0.7), colorCollbox);
+    collboxes.insert(pair<int, pair<string, CollisionBox>>(2, pair<string, CollisionBox>("Pared3", collbox)));
+    collbox = CollisionBox(glm::vec3(22.39, -0.2, -3.1), glm::vec3(8.07, 4, 0.71), colorCollbox);
+    collboxes.insert(pair<int, pair<string, CollisionBox>>(3, pair<string, CollisionBox>("Pared4", collbox)));
+    collbox = CollisionBox(glm::vec3(29.79, 0.0, 3.35), glm::vec3(1.095, 4, 5.659), colorCollbox);
+    collboxes.insert(pair<int, pair<string, CollisionBox>>(4, pair<string, CollisionBox>("Pared5", collbox)));
 
     //CREAMOS LOS LIGHTCUBES QUE ENREALIDAD SON COLLISION BOXES QUE NOS AYUDARAN A IDENTIFICAR LA POSICIÓN DE DONDE ESTAN
     glm::vec3 lScale(0.5);
@@ -320,19 +312,30 @@ void initScene(Shader ourShader)
     //coinIcon = QuadTexture("GUI/Coin.png", 325.0f, 395.0f, 0, 0);
     //yoshiHP = QuadTexture("GUI/hpBar.png", 105.0f, 7.0f, 0.5, 0); 
     //eggHP = QuadTexture("GUI/hpBar.png", 105.0f, 7.0f, 0.5, 0);
-    //dialogBox = QuadTexture("GUI/UI-01.png", 395.0f, 103.0f, 0.0, 0);
     //rainSprite = QuadTexture("GUI/Rain.png", 85.0f, 73.0f, 0.0, 0);
      
+     dialogBox = QuadTexture("GUI/DialogueBox.png", 540.5f, 240.5f, 0.0, 0);
+     digitBar = QuadTexture("GUI/EmptyScoreBar.png", 260.0f, 75.0f, 0.0, 0);
+     pauseBtn = QuadTexture("GUI/MediumGreenButton.png", 125.0f, 92.0f, 0.0, 0);
+     acceptBtn = QuadTexture("GUI/GreenButton.png", 130.0f, 88.0f, 0.0, 0);
+
+
     // ::::::::::::::: TEXT RENDERER ::::::::::::::::::: //
     //text = "Presione ENTER para comenzar";
     //initGameTxt = new TextRenderer(SCR_WIDTH, SCR_HEIGHT);
     //initGameTxt->Load("fonts/LycheeSoda.TTF", 60);
 
-    //gameOverTxt = new TextRenderer(SCR_WIDTH, SCR_HEIGHT);
-    //gameOverTxt->Load("fonts/LycheeSoda.TTF", 60);
+    acceptTxt = new TextRenderer(SCR_WIDTH, SCR_HEIGHT);
+    acceptTxt->Load("fonts/LycheeSoda.TTF", 40);
 
-    //coinCount = new TextRenderer(SCR_WIDTH, SCR_HEIGHT);
-    //coinCount->Load("fonts/LycheeSoda.TTF", 60);
+    digitRegTxt = new TextRenderer(SCR_WIDTH, SCR_HEIGHT);
+    digitRegTxt->Load("fonts/LycheeSoda.TTF", 60);
+
+    interStatusTxt = new TextRenderer(SCR_WIDTH, SCR_HEIGHT);
+    interStatusTxt->Load("fonts/LycheeSoda.TTF", 60);
+
+    objectInfoTxt = new TextRenderer(SCR_WIDTH, SCR_HEIGHT);
+    objectInfoTxt->Load("fonts/LycheeSoda.TTF", 60);
 }
 
 
@@ -418,8 +421,7 @@ void drawModels(Shader *shader, glm::mat4 view, glm::mat4 projection)
     setMultipleLight(shader, pointLightPositions);  
 
     // Puertas
-    //doorL.Slide(*shader);
-    //doorR.Slide(*shader);
+    door.Slide(*shader);
 
     // Arquitectura
     for (int i = 0; i < models.size(); i++)
@@ -432,14 +434,6 @@ void drawModels(Shader *shader, glm::mat4 view, glm::mat4 projection)
         (&models[i].collbox, models[i].name, &camera, renderCollBox, collidedObject_callback);
     }
 
-    // Personaje principal
-    //if (!Yoshi.isPunching)
-    //    Yoshi.model.Draw(*shader);
-    //else
-    //    Yoshi.Punch(*shader);
-
-    // Huevito
-    //Egg.model.Draw(*shader);
 
 }
 
@@ -497,44 +491,66 @@ void drawWater(glm::mat4 view, glm::mat4 projection) {
 
 void drawGUI() {
 
-    // Icons
-    //yoshiIcon.Draw(glm::vec2(-0.8f, 0.8f), 0.19);
-    //eggIcon.Draw(glm::vec2(0.2f, 0.8f), 0.18);
-    //coinIcon.Draw(glm::vec2(-0.8f, 0.55f), glm::vec3(0.15f, 0.2f, 0.0));
 
-    //// HP BARS
-    //float yoshiX = 0.0, yoshiY;
-    ////Yoshi
-    //if (indiHpYoshi == 100) 
-    //    yoshiY = 0.0;
-    //if (indiHpYoshi == 75)
-    //    yoshiY = 1.1;
-    //if (indiHpYoshi == 50)
-    //    yoshiY = 2.2;
-    //if (indiHpYoshi == 25)
-    //    yoshiY = 3.3;
-    //if (indiHpYoshi == 0)
-    //    yoshiY = 4.4;
 
+    if (collidedObject && interactingWithObject) {
+        
+        if (digitFound) {
+
+            if (!models[lastObjectInt].digitTaken) {
+                // Texto de arriba    
+                text = "Digito encontrado";
+                interStatusTxt->RenderText(text, -0.665f, 0.32f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+                //Descripcion
+                string digitFoundTxt = "Encontraste el digito " + to_string(models[lastObjectInt].digitCode);
+                text = digitFoundTxt.c_str();
+                objectInfoTxt->RenderText(text, -0.67f, 0.52f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+                //Cerrar
+                text = "Presione ENTER para cerrar";
+                acceptTxt->RenderText(text, -0.07f, 0.87f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+                dialogBox.Draw(glm::vec2(0.0f, -0.6f), glm::vec3(1.7f, 0.8f, 0.5));
+            }
+            else {
+                // Texto de arriba    
+                text = "Digito ya tomado";
+                interStatusTxt->RenderText(text, -0.665f, 0.32f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+                //Descripcion
+                text = "Siga interactuando con mas objetos";
+                objectInfoTxt->RenderText(text, -0.67f, 0.52f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+                //Cerrar
+                text = "Presione ENTER para cerrar";
+                acceptTxt->RenderText(text, -0.07f, 0.87f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+                dialogBox.Draw(glm::vec2(0.0f, -0.6f), glm::vec3(1.7f, 0.8f, 0.5));
+            }
+        }
+        else {
+            // Texto de arriba    
+            text = "No hay nada";
+            interStatusTxt->RenderText(text, -0.665f, 0.32f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+            //Descripcion
+            text = "Siga interactuando con mas objetos";
+            objectInfoTxt->RenderText(text, -0.67f, 0.52f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+            //Cerrar
+            text = "Presione ENTER para cerrar";
+            acceptTxt->RenderText(text, -0.07f, 0.87f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+            dialogBox.Draw(glm::vec2(0.0f, -0.6f), glm::vec3(1.7f, 0.8f, 0.5));
+        }
+    }
+   
+
+    // Digit register
+    // TODO: Ordenar los digitos y ponerlos en posicion
+    text = "0000";
+    digitRegTxt->RenderText(text, -0.67f, -0.865f, 0.0027f, glm::vec3(0.08f, 0.0f, 0.0f));
+    digitBar.Draw(glm::vec2(-0.6f, 0.83f), glm::vec3(0.6f, 0.23f, 0.5));
+
+    //acceptBtn.Draw(glm::vec2(0.5f, -0.6f), glm::vec3(0.37f, 0.23f, 0.5));
+    //pauseBtn.Draw(glm::vec2(0.78f, 0.83f), glm::vec3(0.25f, 0.25f, 0.0));
+ 
+    
     //yoshiHP.changeSprite(yoshiX, yoshiY);
     //yoshiHP.Draw(glm::vec2(-0.4f, 0.8f), glm::vec3(0.5f, 0.15f, 0.0));
 
-    //// Egg
-    //float eggX = 0.0, eggY;
-    //if (indiHpEgg == 100)
-    //    eggY = 0.0;
-    //if (indiHpEgg == 75)
-    //    eggY = 1.1;
-    //if (indiHpEgg == 50)
-    //    eggY = 2.2;
-    //if (indiHpEgg == 25)
-    //    eggY = 3.3;
-    //if (indiHpEgg == 0)
-    //    eggY = 4.4;
-
-    //eggHP.changeSprite(eggX, eggY);
-    //eggHP.Draw(glm::vec2(0.6f, 0.8f), glm::vec3(0.5f, 0.15f, 0.0));
-   
 
     //// Coin amount
     //int playerScore = Yoshi.getScore();
@@ -704,38 +720,12 @@ void setMultipleLight(Shader *shader, vector<glm::vec3> pointLightPositions)
 }
 
 
-void enemyColls() {
-    // shyGuy
-    //for (int i = 0; i < sizeSG; i++)
-    //{
-    //    if (sgList[i].isDefeated or !sgList[i].bDraw)
-    //        continue;
-    //    actualSG = &sgList[i];
-    //    // yoshiEgg
-    //    detectColls(&Egg.model.collbox, actualSG->name, &actualSG->cb, renderCollBox, collidedEgg_callback);
-    //    // Yoshi
-    //    detectColls(&actualSG->cb, actualSG->name, &Yoshi.cb, Yoshi.name, renderCollBox, collidedEnemy_callback);
-    //    if (!enemyCollidedPlayer) {
-    //        actualSG->enemCollPlayer = false;
-    //        if (!actualSG->itArrived)
-    //            actualSG->isMoving = true;  // Si no colisiono con Yoshi y no ha llegado al destino, entonces seguira su camino
-    //    }
-    //    else
-    //        actualSG->enemCollPlayer = true;
-
-    //}
-
-   
-
-}
-
-
 void collisions()
 {
     //TODO LO DE LAS COLISIONES VA AQUÍ
 
     // Colisiones con la camara / Collboxes (Para que no tope)
-    //detectColls(collboxes, &camera, renderCollBox, collidedObject_callback);
+    detectColls(collboxes, &camera, renderCollBox, collidedObject_callback);
 
     // Colisiones con la camara y el Vector Models
     detectColls(models, &camera, renderCollBox, collidedModel_callback);
@@ -743,97 +733,80 @@ void collisions()
 }
 
 
-void hpCheck() {
+void modifyModels() {
+    // Guardando los nombres de cada modelo
+    string modelNames[30];
+    for (int i = 0; i < models.size(); i++)
+        modelNames[i] = models[i].name;
 
-    //int enemID;
-    //int totalHp;
-    //float Porcentaje;
+    // Se los paso para generar la contraseña
+    generatePass(modelNames, models.size());
+    generatedPassword;
+    placesChoosen;
+    
+    // Asignar los digitos escogidos
+    int codeCounter = 0;
+    for (int i = 0; i < models.size(); i++)
+    {
+        if (placesChoosen[codeCounter] == i) {
+            cout << models[i].name << endl;
+            models[i].setDigit(generatedPassword[codeCounter]);
+            codeCounter++;
+        }
+    }
 
-    //// Yoshi
-    //totalHp = Yoshi.getHP();
-    //Porcentaje = (totalHp * 100) / initHpYoshi;
-    //if (Porcentaje > 75)
-    //    indiHpYoshi = 100; // 100%
-    //if (Porcentaje > 50 && Porcentaje <= 75)
-    //    indiHpYoshi = 75; // 75%
-    //if (Porcentaje > 25 && Porcentaje <= 50)
-    //    indiHpYoshi = 50; // 50%
-    //if (Porcentaje > 0 && Porcentaje <= 25)
-    //    indiHpYoshi = 25; // 25%
-    //if (Porcentaje <= 0) {
-    //    indiHpYoshi = 0;
-    //    gameOver = true;
-    //}
+    // Modificar ciertas collboxes
+    for (int i = 0; i < models.size(); i++)
+    {
+        if (models[i].name == "Counter") {
+            scaleCollBox = models[i].collbox.getScale();
+            scaleCollBox.x -= 0.48;
+            scaleCollBox.z += 0.8;
+            models[i].collbox.setScale(scaleCollBox);
+            models[i].collbox.defineCollisionBox();
+        }
 
+        if (models[i].name == "Bin01" || models[i].name == "Bin02") {
+            scaleCollBox = models[i].collbox.getScale();
+            scaleCollBox.x -= 0.48;
+            scaleCollBox.z -= 0.1;
+            models[i].collbox.setScale(scaleCollBox);
+            models[i].collbox.defineCollisionBox();
+        }
 
-    //// Egg
-    //totalHp = Egg.getHp();
-    //Porcentaje = (totalHp * 100) / initHpEgg;
-    //if (Porcentaje > 75)
-    //    indiHpEgg = 100; // 100%
-    //if (Porcentaje > 50 && Porcentaje <= 75)
-    //    indiHpEgg = 75; // 75%
-    //if (Porcentaje > 25 && Porcentaje <= 50)
-    //    indiHpEgg = 50; // 50%
-    //if (Porcentaje > 0 && Porcentaje <= 25)
-    //    indiHpEgg = 25; // 25%
-    //if (Porcentaje <= 0) {
-    //    indiHpEgg = 0;
-    //    gameOver = true;
-    //}
+        if (models[i].name == "Table01" || models[i].name == "Table02"
+           || models[i].name == "Table03") {
+            scaleCollBox = models[i].collbox.getScale();
+            scaleCollBox.x += 0.01;
+            scaleCollBox.z += 0.01;
+            models[i].collbox.setScale(scaleCollBox);
+            models[i].collbox.defineCollisionBox();
+        }
 
+        if (models[i].name == "botesTable"
+            || models[i].name == "burgerTable" || models[i].name == "Notebook") {
+            scaleCollBox = models[i].collbox.getScale();
+            scaleCollBox.x += 0.2;
+            scaleCollBox.z += 0.2;
+            models[i].collbox.setScale(scaleCollBox);
+            models[i].collbox.defineCollisionBox();
+        }
 
-    //// Enemies
-    //bool allEnemiesDefeated = true;
-    //// shyGuy
-    //for (int i = 0; i < sizeSG; i++)
-    //{
-    //    if (sgList[i].isDefeated or !sgList[i].bDraw)
-    //        continue;
-    //    allEnemiesDefeated = false;
-    //    actualSG = &sgList[i];
-    //    totalHp = actualSG->getHP();
-    //    if (totalHp <= 0) {
-    //        actualSG->isDefeated = true;
-    //        actualSG->bDraw = false;
-    //        maxEnemy--;
-    //    }
+        if (models[i].name == "botesCounter" || models[i].name == "burgerCounter") {
+            scaleCollBox = models[i].collbox.getScale();
+            scaleCollBox.x += 0.5;
+            scaleCollBox.z -= 0.02;
+            models[i].collbox.setScale(scaleCollBox);
+            models[i].collbox.defineCollisionBox();
+        }
 
-    //}
+        if (models[i].name == "burgerThing") {
+            scaleCollBox = models[i].collbox.getScale();
+            scaleCollBox.z += 0.2;
+            scaleCollBox.x -= 0.25;
+            models[i].collbox.setScale(scaleCollBox);
+            models[i].collbox.defineCollisionBox();
+        }
 
-    //// billBala
-    //for (int i = 0; i < sizeBB; i++)
-    //{
-    //    if (bbList[i].isDefeated or !bbList[i].bDraw)
-    //        continue;
-    //    allEnemiesDefeated = false;
-    //    actualBB = &bbList[i];
-    //    totalHp = actualBB->getHP();
-    //    if (totalHp <= 0) {
-    //        actualBB->isDefeated = true;
-    //        actualBB->bDraw = false;
-    //        maxEnemy--;
-    //    }
-
-    //}
-
-    //// Blooper
-    //for (int i = 0; i < sizeBL; i++)
-    //{
-    //    if (blList[i].isDefeated or !blList[i].bDraw)
-    //        continue;
-    //    allEnemiesDefeated = false;
-    //    actualBL = &blList[i];
-    //    totalHp = actualBL->getHP();
-    //    if (totalHp <= 0) {
-    //        actualBL->isDefeated = true;
-    //        actualBL->bDraw = false;
-    //        maxEnemy--;
-    //    }
-    //}
-
-    //if (allEnemiesDefeated and eMapFinished)
-    //    gameFinished = true;
-   
+    }
 }
-
