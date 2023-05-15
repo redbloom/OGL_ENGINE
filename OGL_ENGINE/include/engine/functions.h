@@ -11,7 +11,6 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 // Modelos
 void collidedObject_callback(string nameCollidedObject);
 void collidedModel_callback(string nameCollidedObject);
-void collidedDoor_callback(string nameCollidedObject);
 void modifyModels();
 
 

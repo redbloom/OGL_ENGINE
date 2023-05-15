@@ -11,6 +11,8 @@ public:
 	string name;
 	bool isOpen;
 	bool isOpening;
+	bool isClosing;
+
 	bool collDetected;
 
 	virtual void setInitModel() = 0; // Modelo standard
@@ -23,6 +25,7 @@ public:
 	Door() {
 		this->isOpen = false;
 		this->isOpening = false;
+		this->isClosing = false;
 		this->collDetected = false;
 
 		// Animacion

@@ -425,7 +425,6 @@ void drawModels(Shader *shader, glm::mat4 view, glm::mat4 projection)
         (&models[i].collbox, models[i].name, &camera, renderCollBox, collidedObject_callback);
     }
 
-
 }
 
 
@@ -678,6 +677,8 @@ void collisions()
 
     // Colisiones con la camara y el Vector Models
     detectColls(models, &camera, renderCollBox, collidedModel_callback);
+
+    detectColls(door.cb, &camera, door.collDetected);
    
 }
 
