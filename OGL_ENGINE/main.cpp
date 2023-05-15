@@ -317,16 +317,16 @@ void initScene(Shader ourShader)
 
     // ::::::::::::::: TEXT RENDERER ::::::::::::::::::: //
     acceptTxt = new TextRenderer(SCR_WIDTH, SCR_HEIGHT);
-    acceptTxt->Load("fonts/LycheeSoda.TTF", 40);
+    acceptTxt->Load("fonts/Dreamy.TTF", 40);
 
     digitRegTxt = new TextRenderer(SCR_WIDTH, SCR_HEIGHT);
-    digitRegTxt->Load("fonts/LycheeSoda.TTF", 60);
+    digitRegTxt->Load("fonts/Dreamy.TTF", 50);
 
     interStatusTxt = new TextRenderer(SCR_WIDTH, SCR_HEIGHT);
-    interStatusTxt->Load("fonts/LycheeSoda.TTF", 60);
+    interStatusTxt->Load("fonts/Dreamy.TTF", 60);
 
     objectInfoTxt = new TextRenderer(SCR_WIDTH, SCR_HEIGHT);
-    objectInfoTxt->Load("fonts/LycheeSoda.TTF", 55);
+    objectInfoTxt->Load("fonts/Dreamy.TTF", 55);
 }
 
 
@@ -529,7 +529,7 @@ void drawGUI() {
     // Digit register
     string digitStr = digitsToText();
     text = digitStr.c_str();
-    digitRegTxt->RenderText(text, -0.67f, -0.865f, 0.0027f, glm::vec3(0.08f, 0.0f, 0.0f));
+    digitRegTxt->RenderText(text, -0.69f, -0.868f, 0.0027f, glm::vec3(0.08f, 0.0f, 0.0f));
     digitBar.Draw(glm::vec2(-0.6f, 0.83f), glm::vec3(0.6f, 0.23f, 0.5));
 
    
@@ -678,7 +678,12 @@ void collisions()
     // Colisiones con la camara y el Vector Models
     detectColls(models, &camera, renderCollBox, collidedModel_callback);
 
-    detectColls(door.cb, &camera, door.collDetected);
+    detectColls(door.cb, &camera, door.collDetected, collidedDoor_callback);
+
+    if (door.collDetected)
+        collidedWithDoor = true;
+    else
+        collidedWithDoor = false;
    
 }
 

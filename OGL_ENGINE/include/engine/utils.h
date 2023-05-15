@@ -55,20 +55,19 @@ void detectColls(vector<Model> models, Camera* cam, bool renderCollBox, void (*c
         isCollision = true;
 }
 
-void detectColls(CollisionBox cb, Camera* cam, bool& doorBool) {
+void detectColls(CollisionBox cb, Camera* cam, bool& doorBool, void(*callback)) {
     bool itCollided = false;
 
     if (intersect(cb, cam->collbox)) {
         // Si llego a colisionar con algo, entonces
+        callback;
         itCollided = true;
     }
 
     if (!itCollided) {
-        isCollision = false;
         doorBool = false;
     }
     else {
-        isCollision = true;
         doorBool = true;
     }
 }

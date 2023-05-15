@@ -15,7 +15,7 @@ void Door::setInitModel() {
 	this->name = "Puerta";
 
 	glm::vec3 scaleCollBox = this->cb.getScale();
-	scaleCollBox.x += 0.3;
+	scaleCollBox.x += 0.2;
 	this->cb.setScale(scaleCollBox);
 	this->cb.defineCollisionBox();
 }

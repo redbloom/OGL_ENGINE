@@ -178,3 +178,4 @@ int initHpYoshi, initHpEgg;
 
 // Puertas
 Door door;
+bool collidedWithDoor;

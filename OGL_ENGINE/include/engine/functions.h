@@ -11,6 +11,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 // Modelos
 void collidedObject_callback(string nameCollidedObject);
 void collidedModel_callback(string nameCollidedObject);
+void collidedDoor_callback();
 void modifyModels();
 
 
@@ -747,7 +748,9 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 }
 
 
-
+void collidedDoor_callback() {
+    collisionSide(door.cb, camera.collbox);
+}
 
 
 void collidedObject_callback(string nameCollidedObject) // Camara - collboxes
@@ -782,16 +785,20 @@ void collidedModel_callback(string nameCollidedObject) {
 
             collidedObject = true;
 
+            //Para bloquear el paso con los modelos
             if (nameCollidedObject != "mcDonalds" && nameCollidedObject != "botesTable"
                 && nameCollidedObject != "burgerTable" && nameCollidedObject != "Notebook"
                 && nameCollidedObject != "burgerThing" && nameCollidedObject != "botesCounter"
                 && nameCollidedObject != "burgerCounter") {
-                //Para bloquear el paso con los modelos
                 collisionSide(models[i].collbox, camera.collbox);
 
             }
 
-            if (models[i].name == "Counter")
+            // Para no interactuar con estos
+            if (nameCollidedObject == "mcDonalds" || nameCollidedObject == "Seat01" || nameCollidedObject == "Seat02"
+                || nameCollidedObject == "Seat03" || nameCollidedObject == "Seat04" || nameCollidedObject == "Seat05"
+                || nameCollidedObject == "Table01" || nameCollidedObject == "Table02" || nameCollidedObject == "Table03"
+                || nameCollidedObject == "Counter" || nameCollidedObject == "Arcade") 
                 return;
 
             // Si el usuario encontro un digito...
@@ -917,7 +924,7 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime, stopCam
     // Checamos si no colisiono con algun objeto
     collisions();
     // Si no, entonces liberar cualquier movimiento
-    if (!isCollision and !isCollbox) {
+    if (!isCollision and !isCollbox and !collidedWithDoor) {
         collidedObject = false;
         stop.Back = false;
         stop.Front = false;
