@@ -232,7 +232,7 @@ void initScene(Shader ourShader)
     //:::: INICIALIZAMOS NUESTROS MODELOS :::://   
     models.push_back(Model("mcDonalds", "models/mcDonalds/mcDonalds2.obj", glm::vec3(22, -0.78, 2.7), glm::vec3(0, -90, 0), 0.0f, initScale));
 
-     //Muebles 
+    //Muebles 
     models.push_back(Model("Counter", "models/Counter/Counter.obj", glm::vec3(23, 0.2, 1.5), glm::vec3(0, -90, 0), 0.0f, 0.13f));
 
     models.push_back(Model("Seat01", "models/Counter/Seat.obj", glm::vec3(20.7, 0.2, -0.2), glm::vec3(0, -90, 0), 0.0f, 0.125f));
@@ -276,13 +276,13 @@ void initScene(Shader ourShader)
     modifyModels();
 
     // Puertas
-     door.setInitModel();
+    door.setInitModel();
 
 
     //CREAMOS TODAS  LAS CAJAS DE COLISION INDIVIDUALES
     CollisionBox collbox;
     glm::vec4 colorCollbox(0.41f, 0.2f, 0.737f, 0.06f);
-                                        // Lugar                  //Escala
+    // Lugar                  //Escala
     collbox = CollisionBox(glm::vec3(12.37, -0.2, -1.05), glm::vec3(0.5, 4, 3.325), colorCollbox);
     collboxes.insert(pair<int, pair<string, CollisionBox>>(0, pair<string, CollisionBox>("Pared1", collbox)));
     collbox = CollisionBox(glm::vec3(12.37, -0.2, 9.6), glm::vec3(0.5, 4, 3.275), colorCollbox);
@@ -307,24 +307,15 @@ void initScene(Shader ourShader)
     lightcubes.insert(pair<int, pair<string, CollisionBox>>(3, pair<string, CollisionBox>("LUZ4", collbox)));
 
     // ::::::::::::::: GUI ::::::::::::::::::: //
-    //yoshiIcon = QuadTexture("GUI/yoshiIcon.png", 49.0f, 50.0f, 0, 0);
-    //eggIcon = QuadTexture("GUI/eggIcon.png", 60.0f, 70.0f, 0, 0);
-    //coinIcon = QuadTexture("GUI/Coin.png", 325.0f, 395.0f, 0, 0);
-    //yoshiHP = QuadTexture("GUI/hpBar.png", 105.0f, 7.0f, 0.5, 0); 
-    //eggHP = QuadTexture("GUI/hpBar.png", 105.0f, 7.0f, 0.5, 0);
     //rainSprite = QuadTexture("GUI/Rain.png", 85.0f, 73.0f, 0.0, 0);
-     
-     dialogBox = QuadTexture("GUI/DialogueBox.png", 540.5f, 240.5f, 0.0, 0);
-     digitBar = QuadTexture("GUI/EmptyScoreBar.png", 260.0f, 75.0f, 0.0, 0);
-     pauseBtn = QuadTexture("GUI/MediumGreenButton.png", 125.0f, 92.0f, 0.0, 0);
-     acceptBtn = QuadTexture("GUI/GreenButton.png", 130.0f, 88.0f, 0.0, 0);
+
+    dialogBox = QuadTexture("GUI/DialogueBox.png", 540.5f, 240.5f, 0.0, 0);
+    digitBar = QuadTexture("GUI/EmptyScoreBar.png", 260.0f, 75.0f, 0.0, 0);
+    pauseBtn = QuadTexture("GUI/MediumGreenButton.png", 125.0f, 92.0f, 0.0, 0);
+    acceptBtn = QuadTexture("GUI/GreenButton.png", 130.0f, 88.0f, 0.0, 0);
 
 
     // ::::::::::::::: TEXT RENDERER ::::::::::::::::::: //
-    //text = "Presione ENTER para comenzar";
-    //initGameTxt = new TextRenderer(SCR_WIDTH, SCR_HEIGHT);
-    //initGameTxt->Load("fonts/LycheeSoda.TTF", 60);
-
     acceptTxt = new TextRenderer(SCR_WIDTH, SCR_HEIGHT);
     acceptTxt->Load("fonts/LycheeSoda.TTF", 40);
 
@@ -335,7 +326,7 @@ void initScene(Shader ourShader)
     interStatusTxt->Load("fonts/LycheeSoda.TTF", 60);
 
     objectInfoTxt = new TextRenderer(SCR_WIDTH, SCR_HEIGHT);
-    objectInfoTxt->Load("fonts/LycheeSoda.TTF", 60);
+    objectInfoTxt->Load("fonts/LycheeSoda.TTF", 55);
 }
 
 
@@ -491,8 +482,6 @@ void drawWater(glm::mat4 view, glm::mat4 projection) {
 
 void drawGUI() {
 
-
-
     if (collidedObject && interactingWithObject) {
         
         if (digitFound) {
@@ -516,7 +505,7 @@ void drawGUI() {
                 interStatusTxt->RenderText(text, -0.665f, 0.32f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
                 //Descripcion
                 text = "Siga interactuando con mas objetos";
-                objectInfoTxt->RenderText(text, -0.67f, 0.52f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+                objectInfoTxt->RenderText(text, -0.69f, 0.52f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
                 //Cerrar
                 text = "Presione ENTER para cerrar";
                 acceptTxt->RenderText(text, -0.07f, 0.87f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
@@ -529,7 +518,7 @@ void drawGUI() {
             interStatusTxt->RenderText(text, -0.665f, 0.32f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
             //Descripcion
             text = "Siga interactuando con mas objetos";
-            objectInfoTxt->RenderText(text, -0.67f, 0.52f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+            objectInfoTxt->RenderText(text, -0.69f, 0.52f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
             //Cerrar
             text = "Presione ENTER para cerrar";
             acceptTxt->RenderText(text, -0.07f, 0.87f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
@@ -539,52 +528,12 @@ void drawGUI() {
    
 
     // Digit register
-    // TODO: Ordenar los digitos y ponerlos en posicion
-    text = "0000";
+    string digitStr = digitsToText();
+    text = digitStr.c_str();
     digitRegTxt->RenderText(text, -0.67f, -0.865f, 0.0027f, glm::vec3(0.08f, 0.0f, 0.0f));
     digitBar.Draw(glm::vec2(-0.6f, 0.83f), glm::vec3(0.6f, 0.23f, 0.5));
 
-    //acceptBtn.Draw(glm::vec2(0.5f, -0.6f), glm::vec3(0.37f, 0.23f, 0.5));
-    //pauseBtn.Draw(glm::vec2(0.78f, 0.83f), glm::vec3(0.25f, 0.25f, 0.0));
- 
-    
-    //yoshiHP.changeSprite(yoshiX, yoshiY);
-    //yoshiHP.Draw(glm::vec2(-0.4f, 0.8f), glm::vec3(0.5f, 0.15f, 0.0));
-
-
-    //// Coin amount
-    //int playerScore = Yoshi.getScore();
-    //string coinAmount;
-    //if (playerScore < 10)
-    //    coinAmount = "0" + to_string(playerScore);
-    //else
-    //    coinAmount = to_string(playerScore);
-    //text = coinAmount.c_str();
-    //coinCount->RenderText(text, -0.68f, -0.58f, 0.0027f, glm::vec3(0.1f, 0.0f, 0.0f));
-
-    //if (!gameStarted) {
-    //    // Instrucciones inicio
-    //    text = "¡Protege el objeto de los enemigos.";
-    //    initGameTxt->RenderText(text, -0.67f, 0.5f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
-    //    text = "Presione M para comenzar.";
-    //    initGameTxt->RenderText(text, -0.56f, 0.6f, 0.0018f, glm::vec3(0.1f, 0.0f, 0.0f));
-    //    dialogBox.Draw(glm::vec2(0.0f, -0.6f), glm::vec3(1.5f, 0.5f, 0.5));
-    //}
    
-    ////Game Over
-    //if (gameOver) {
-    //    text = "GAME OVER";
-    //    gameOverTxt->RenderText(text, -0.35f, 0.55f, 0.0025f, glm::vec3(0.1f, 0.0f, 0.0f));
-    //    dialogBox.Draw(glm::vec2(0.0f, -0.6f), glm::vec3(1.5f, 0.5f, 0.5));
-    //}
-
-    //// Juego completado
-    //if (gameFinished) {
-    //    text = "Juego completado";
-    //    gameOverTxt->RenderText(text, -0.5f, 0.55f, 0.0025f, glm::vec3(0.1f, 0.0f, 0.0f));
-    //    dialogBox.Draw(glm::vec2(0.0f, -0.6f), glm::vec3(1.5f, 0.5f, 0.5));
-    //}
-
         // Lluvia
     //if (isNight) {
     //    if (rainY >= -4)
@@ -741,16 +690,14 @@ void modifyModels() {
 
     // Se los paso para generar la contraseña
     generatePass(modelNames, models.size());
-    generatedPassword;
-    placesChoosen;
     
     // Asignar los digitos escogidos
     int codeCounter = 0;
     for (int i = 0; i < models.size(); i++)
     {
-        if (placesChoosen[codeCounter] == i) {
+        if (code[codeCounter].assignedPlace == i) {
             cout << models[i].name << endl;
-            models[i].setDigit(generatedPassword[codeCounter]);
+            models[i].setDigit(code[codeCounter].digit);
             codeCounter++;
         }
     }

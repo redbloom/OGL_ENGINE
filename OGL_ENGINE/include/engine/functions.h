@@ -813,8 +813,7 @@ void collidedModel_callback(string nameCollidedObject) {
                        // Guardar digitos
                         if (!models[lastObjectInt].digitTaken) {
                             models[lastObjectInt].digitTaken = true;
-                            digitsFound[digitsCounter] = models[lastObjectInt].digitCode;
-                            digitsCounter++;
+                            digitTakenCode(lastObjectInt);
                         }
                         //Liberar tecla
                         clickOneTime = false;

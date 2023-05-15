@@ -2,23 +2,23 @@
 #include <random>
 #include <engine/model.h>
 #define TOTAL_DIGITS 4
-#define TIME_LIMIT 25
 
 // Juego
 bool gameStarted = false;
 bool gameCompleted = false;
-int digitsFound[TOTAL_DIGITS];
+// Objeto - interaccion
 bool interactingWithObject = false;
 bool stopGettingInfo = false;
 bool collidedObject = false;
+int lastObjectInt;
+// Teclas 
 bool clickOneTime = false;
 bool oneObjAtTime = false;
+// Digitos
 bool digitFound = false;
-int lastObjectInt;
 
-int cooldown = TIME_LIMIT;
 
-int digitsCounter = 0;
+
 
 // Aleatorio
 std::random_device rd;
@@ -31,8 +31,18 @@ int random(int low, int high)
 }
 
 // Digits
-int generatedPassword[TOTAL_DIGITS];
-int placesChoosen[TOTAL_DIGITS];
+class Password
+{public:
+	int digit;
+	bool isFound;
+	int assignedPlace;
+
+	Password() {
+		this->isFound = false;
+	}
+} code[TOTAL_DIGITS];
+
+
 
 enum DIGITS {
 	NONE = 11
@@ -42,6 +52,7 @@ void generatePass(string* names, int size) {
 
 	int randomPlace;
 	int i = 0;
+	int placesChoosen[TOTAL_DIGITS];
 
 	size -= 1;
 
@@ -93,6 +104,30 @@ void generatePass(string* names, int size) {
 
 
 	// Generando los digitos
-	for (size_t i = 0; i < TOTAL_DIGITS; i++)
-		generatedPassword[i] = random(0, 9);
+	for (i = 0; i < TOTAL_DIGITS; i++) {
+		code[i].assignedPlace = placesChoosen[i];
+		code[i].digit = random(0, 9);
+	}
+}
+
+void digitTakenCode(int modelLocation) {
+	for (int i = 0; i < TOTAL_DIGITS; i++)
+	{
+		if (code[i].assignedPlace == modelLocation) 
+			code[i].isFound = true;
+		
+	}
+}
+
+string digitsToText() {
+	string digitsCollected = "";
+	for (int i = 0; i < TOTAL_DIGITS; i++)
+	{
+		if (code[i].isFound)
+			digitsCollected += to_string(code[i].digit);
+		else
+			digitsCollected += " ";
+
+	}
+	return digitsCollected;
 }
