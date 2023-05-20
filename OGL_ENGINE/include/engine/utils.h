@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+bool gameStarted = false;
+bool interactingArcade = false;
 
 
 static bool intersect(CollisionBox a, CollisionBox b)
@@ -37,6 +39,7 @@ void detectColls(CollisionBox *coll, string name, Camera *cam, bool renderCollBo
 
 void detectColls(vector<Model> models, Camera* cam, bool renderCollBox, void (*callback)(string)) {
     bool itCollided = false;
+    bool collidedArc = false;
     glm::mat4 projection = glm::perspective(glm::radians(cam->Zoom), (float)800 / 600, 0.1f, 100.0f);
     glm::mat4 view = cam->GetViewMatrix();
     for (int i = 0; i < models.size(); i++)
@@ -46,8 +49,15 @@ void detectColls(vector<Model> models, Camera* cam, bool renderCollBox, void (*c
             callback(name);
             // Si llego a colisionar con algo, entonces
             itCollided = true;
+            if (models[i].name == "Arcade" && !gameStarted)
+                collidedArc = true;
         }
     }
+
+    if (collidedArc)
+        interactingArcade = true;
+    else
+        interactingArcade = false;
 
     if (!itCollided)
         isCollision = false;

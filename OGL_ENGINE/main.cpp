@@ -139,16 +139,10 @@ int main()
     smoke.Release();
     particles.Release();
 
+    // GUI
     dialogBox.Release();
     digitBar.Release();
 
-    //yoshiIcon.Release();
-    //eggIcon.Release();
-    //coinIcon.Release();
-    //yoshiHP.Release();
-    //eggHP.Release();
-    //rainSprite.Release();
-    //dialogBox.Release();
     glfwTerminate();
 
     return 0;
@@ -156,10 +150,6 @@ int main()
 
 void initScene(Shader ourShader)
 {
-
-    // Hp
-    //initHpYoshi = Yoshi.getHP();
-    //initHpEgg = Egg.getHp();
 
     //AGUA
     agua = Plane("textures/agua3.jpg", 500.0, 500.0, 0, 0);
@@ -320,13 +310,20 @@ void initScene(Shader ourShader)
     acceptTxt->Load("fonts/Dreamy.TTF", 40);
 
     digitRegTxt = new TextRenderer(SCR_WIDTH, SCR_HEIGHT);
-    digitRegTxt->Load("fonts/Dreamy.TTF", 50);
+    digitRegTxt->Load("fonts/Dreamy.TTF", 40);
 
     interStatusTxt = new TextRenderer(SCR_WIDTH, SCR_HEIGHT);
-    interStatusTxt->Load("fonts/Dreamy.TTF", 60);
+    interStatusTxt->Load("fonts/Dreamy.TTF", 55);
 
     objectInfoTxt = new TextRenderer(SCR_WIDTH, SCR_HEIGHT);
-    objectInfoTxt->Load("fonts/Dreamy.TTF", 55);
+    objectInfoTxt->Load("fonts/Dreamy.TTF", 45);
+
+    gameInfoTxt = new TextRenderer(SCR_WIDTH, SCR_HEIGHT);
+    gameInfoTxt->Load("fonts/Dreamy.TTF", 45);
+    
+    gameInfoTxt2 = new TextRenderer(SCR_WIDTH, SCR_HEIGHT);
+    gameInfoTxt2->Load("fonts/Dreamy.TTF", 45);
+
 }
 
 
@@ -356,52 +353,49 @@ void loadEnviroment(Terrain* terrain, SkyBox* sky, glm::mat4 view, glm::mat4 pro
         for (pair<int, pair<string, CollisionBox>> lights : lightcubes)
             lights.second.second.draw(view, projection);
 
-    // Cambio de skybox (amanecer)
-    //contadorSky = (float)glfwGetTime();
-    //int totalSec;
-    //if (contadorSky > 60) {// Sacar el residuo
-    //    totalSec = (int)contadorSky % 60;
-    //    //if (totalSec == 0)
-    //    //    minuteCount++;
-    //}
-    //else {
-    //    totalSec = (int)contadorSky;
-    //    //if (totalSec >= 60)
-    //    //    minuteCount++;
-    //}
-    //
+     //Cambio de skybox (amanecer)
+    contadorSky = (float)glfwGetTime();
+    int totalSec;
+    if (contadorSky > 60) {// Sacar el residuo
+        totalSec = (int)contadorSky % 60;
+    }
+    else {
+        totalSec = (int)contadorSky;
+    }
 
-    //if (/*minuteCount % 2 == 0*/  totalSec >= 0 && totalSec <= 30) {
-    //    if (cambioSky > 0.2) {
-    //        mainLight = vec3(cambioSky);
-    //        cambioSky -= 0.001;
-    //    }
-    //    else {
-    //        if (changeSkyBoxTexture == 0)
-    //        {
-    //            isNight = true;
-    //            isDay = false;
-    //            sky->reloadTexture("7");
-    //            changeSkyBoxTexture++;
-    //        }
-    //    }
-    //}
-    //else {
-    //    if (cambioSky < 0.5) {
-    //        mainLight = vec3(cambioSky);
-    //        cambioSky += 0.001;
-    //    }
-    //    else {
-    //        if (changeSkyBoxTexture == 1)
-    //        {
-    //            isDay = true;
-    //            isNight = false;
-    //            sky->reloadTexture("6");
-    //            changeSkyBoxTexture--;
-    //        }
-    //    }
-    //}
 
+
+     if (/*minuteCount % 2 == 0*/  totalSec >= 0 && totalSec <= 30) {
+         if (cambioSky > 0.2) {
+             mainLight = vec3(cambioSky);
+             cambioSky -= 0.001;
+         }
+         else {
+             if (changeSkyBoxTexture == 0)
+             {
+                 isNight = true;
+                 isDay = false;
+                 sky->reloadTexture("10");
+                 changeSkyBoxTexture++;
+             }
+         }
+     }
+     else {
+         if (cambioSky < 0.5) {
+             mainLight = vec3(cambioSky);
+             cambioSky += 0.001;
+         }
+         else {
+             if (changeSkyBoxTexture == 1)
+             {
+                 isDay = true;
+                 isNight = false;
+                 sky->reloadTexture("9");
+                 changeSkyBoxTexture--;
+             }
+         }
+     }
+    
 
 }
 void drawModels(Shader *shader, glm::mat4 view, glm::mat4 projection)
@@ -481,6 +475,23 @@ void drawWater(glm::mat4 view, glm::mat4 projection) {
 
 void drawGUI() {
 
+    if (!gameStarted && startMessage) {
+        // Texto de arriba    
+        text = "Minijuego";
+        interStatusTxt->RenderText(text, -0.665f, 0.32f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+        //Descripcion
+        text = "Objetivo: encontrar los 4 digitos";
+        gameInfoTxt->RenderText(text, -0.67f, 0.52f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+        text = " escondidos en el lugar";
+        gameInfoTxt2->RenderText(text, -0.67f, 0.62f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+        //Cerrar
+        text = "Presione K para jugar o L para cancelar";
+        acceptTxt->RenderText(text, -0.47f, 0.87f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+        dialogBox.Draw(glm::vec2(0.0f, -0.6f), glm::vec3(1.7f, 0.8f, 0.5));
+        return;
+    }
+
+
     if (collidedObject && interactingWithObject) {
         
         if (digitFound) {
@@ -529,7 +540,7 @@ void drawGUI() {
     // Digit register
     string digitStr = digitsToText();
     text = digitStr.c_str();
-    digitRegTxt->RenderText(text, -0.69f, -0.868f, 0.0027f, glm::vec3(0.08f, 0.0f, 0.0f));
+    digitRegTxt->RenderText(text, -0.67f, -0.868f, 0.0027f, glm::vec3(0.08f, 0.0f, 0.0f));
     digitBar.Draw(glm::vec2(-0.6f, 0.83f), glm::vec3(0.6f, 0.23f, 0.5));
 
    

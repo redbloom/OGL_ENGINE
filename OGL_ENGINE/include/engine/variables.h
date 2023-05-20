@@ -163,18 +163,16 @@ TextRenderer* acceptTxt;
 TextRenderer* digitRegTxt;
 TextRenderer* interStatusTxt;
 TextRenderer* objectInfoTxt;
+TextRenderer* gameInfoTxt;
+TextRenderer* gameInfoTxt2;
 
 //::::::::::::::::::::: VARIABLES CAMBIO SKYBOX :::::::::::::::::::::::
 int changeSkyBoxTexture = 0;
 float cambioSky = 0.5;
 float contadorSky = 0;
 int minuteCount = 0;
-bool isNight = false, isDay = false;
+bool isNight = false, isDay = true;
 bool isRaining = false;
-
-// HP
-int indiHpYoshi, indiHpEgg;
-int initHpYoshi, initHpEgg;
 
 // Puertas
 Door door;

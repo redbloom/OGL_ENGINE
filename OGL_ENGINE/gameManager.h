@@ -4,7 +4,7 @@
 #define TOTAL_DIGITS 4
 
 // Juego
-bool gameStarted = false;
+bool startMessage = false;
 bool gameCompleted = false;
 // Objeto - interaccion
 bool interactingWithObject = false;

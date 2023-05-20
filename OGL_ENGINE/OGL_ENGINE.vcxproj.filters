@@ -63,15 +63,6 @@
     <ClCompile Include="rbEnvironment.cpp">
       <Filter>Archivos de recursos</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="Buff.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemies.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
     <ClCompile Include="Puertas.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
@@ -145,24 +136,6 @@
     </ClInclude>
     <ClInclude Include="Base.h">
       <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Buff.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="buffType.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemies.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="yoshiEgg.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="gameMap.h">
-      <Filter>Archivos de recursos</Filter>
     </ClInclude>
     <ClInclude Include="Puertas.h">
       <Filter>Archivos de encabezado</Filter>

@@ -137,42 +137,63 @@ void processInput(GLFWwindow* window)
 
         }
 
-        if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
+        if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
         {
-            //gameStarted = true;
+            if (clickOneTime) {
+                gameStarted = true;
+                startMessage = false;
+                clickOneTime = false;
+            }
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+        {
+            if (clickOneTime) {
+                gameStarted = false;
+                startMessage = false;
+                clickOneTime = false;
+            }
         }
 
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         {
-            if(!interactingWithObject)
+            if(!interactingWithObject && !startMessage)
                 foward();
         }
         if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
         {
-            if (!interactingWithObject)
+            if (!interactingWithObject && !startMessage)
                 backward();
         }
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
         {
-            if (!interactingWithObject)
+            if (!interactingWithObject && !startMessage)
                 left();
         }
         if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         {
-            if (!interactingWithObject)
+            if (!interactingWithObject && !startMessage)
                 right();
         }
         if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
 
+
             if(!clickOneTime) {
-                if (!interactingWithObject && collidedObject) {
+                if (!interactingWithObject && collidedObject && gameStarted) {
                     clickOneTime = true;
                     interactingWithObject = true;
                     stopGettingInfo = false;
                 }
+                else if (!gameStarted && interactingArcade) {
+                    clickOneTime = true;
+                    startMessage = true;
+                }
             }
         }
         if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS) {
+
+            if (!gameStarted)
+                return;
 
             if (interactingWithObject && !stopGettingInfo) {
                 stopGettingInfo = true;
@@ -798,8 +819,12 @@ void collidedModel_callback(string nameCollidedObject) {
             if (nameCollidedObject == "mcDonalds" || nameCollidedObject == "Seat01" || nameCollidedObject == "Seat02"
                 || nameCollidedObject == "Seat03" || nameCollidedObject == "Seat04" || nameCollidedObject == "Seat05"
                 || nameCollidedObject == "Table01" || nameCollidedObject == "Table02" || nameCollidedObject == "Table03"
-                || nameCollidedObject == "Counter" || nameCollidedObject == "Arcade") 
+                || nameCollidedObject == "Counter") 
                 return;
+
+            if (!gameStarted) 
+                return;
+            
 
             // Si el usuario encontro un digito...
             if (models[i].digitCode != NONE) {

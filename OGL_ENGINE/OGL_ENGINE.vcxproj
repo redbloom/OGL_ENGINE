@@ -146,11 +146,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Buff.cpp" />
-    <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Puertas.cpp" />
     <ClCompile Include="rbCollision.cpp" />
     <ClCompile Include="rbEnvironment.cpp" />
@@ -160,10 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
-    <ClInclude Include="buffType.h" />
-    <ClInclude Include="Enemies.h" />
     <ClInclude Include="gameManager.h" />
-    <ClInclude Include="gameMap.h" />
     <ClInclude Include="include\engine\Billboard.h" />
     <ClInclude Include="include\engine\camera.h" />
     <ClInclude Include="include\engine\CollisionBox.h" />
@@ -186,10 +180,7 @@
     <ClInclude Include="include\engine\utils.h" />
     <ClInclude Include="include\engine\variables.h" />
     <ClInclude Include="Base.h" />
-    <ClInclude Include="Buff.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="Puertas.h" />
-    <ClInclude Include="yoshiEgg.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="billboard.fs" />
