@@ -6,6 +6,7 @@
 // Juego
 bool startMessage = false;
 bool gameCompleted = false;
+bool showFinalMsg = false;
 // Objeto - interaccion
 bool interactingWithObject = false;
 bool stopGettingInfo = false;
@@ -16,7 +17,6 @@ bool clickOneTime = false;
 bool oneObjAtTime = false;
 // Digitos
 bool digitFound = false;
-
 
 
 
@@ -121,13 +121,23 @@ void digitTakenCode(int modelLocation) {
 
 string digitsToText() {
 	string digitsCollected = "";
+	int digitsNumber = 0;
 	for (int i = 0; i < TOTAL_DIGITS; i++)
 	{
-		if (code[i].isFound)
+		if (code[i].isFound) {
 			digitsCollected += to_string(code[i].digit);
+			digitsNumber++;
+
+		}
 		else
 			digitsCollected += " ";
 
 	}
+
+	if (digitsNumber == TOTAL_DIGITS) {
+		gameCompleted = true;
+		showFinalMsg = true;
+	}
+
 	return digitsCollected;
 }

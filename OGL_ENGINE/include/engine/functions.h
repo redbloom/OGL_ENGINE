@@ -139,7 +139,7 @@ void processInput(GLFWwindow* window)
 
         if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
         {
-            if (clickOneTime) {
+            if (clickOneTime && !gameStarted) {
                 gameStarted = true;
                 startMessage = false;
                 clickOneTime = false;
@@ -148,31 +148,37 @@ void processInput(GLFWwindow* window)
 
         if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
         {
-            if (clickOneTime) {
+            if (clickOneTime && !gameStarted) {
                 gameStarted = false;
                 startMessage = false;
                 clickOneTime = false;
             }
         }
 
+        if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
+        {
+            if (gameCompleted && showFinalMsg)
+                showFinalMsg = false;
+        }
+
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         {
-            if(!interactingWithObject && !startMessage)
+            if(!interactingWithObject && !startMessage && !showFinalMsg)
                 foward();
         }
         if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
         {
-            if (!interactingWithObject && !startMessage)
+            if (!interactingWithObject && !startMessage && !showFinalMsg)
                 backward();
         }
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
         {
-            if (!interactingWithObject && !startMessage)
+            if (!interactingWithObject && !startMessage && !showFinalMsg)
                 left();
         }
         if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         {
-            if (!interactingWithObject && !startMessage)
+            if (!interactingWithObject && !startMessage && !showFinalMsg)
                 right();
         }
         if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
@@ -195,8 +201,10 @@ void processInput(GLFWwindow* window)
             if (!gameStarted)
                 return;
 
-            if (interactingWithObject && !stopGettingInfo) {
+ 
+            if (interactingWithObject && !stopGettingInfo && !gameCompleted) {
                 stopGettingInfo = true;
+                return;
             }
 
         }
@@ -822,7 +830,7 @@ void collidedModel_callback(string nameCollidedObject) {
                 || nameCollidedObject == "Counter") 
                 return;
 
-            if (!gameStarted) 
+            if (!gameStarted || gameCompleted) 
                 return;
             
 

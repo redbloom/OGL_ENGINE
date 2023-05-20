@@ -301,8 +301,8 @@ void initScene(Shader ourShader)
 
     dialogBox = QuadTexture("GUI/DialogueBox.png", 540.5f, 240.5f, 0.0, 0);
     digitBar = QuadTexture("GUI/EmptyScoreBar.png", 260.0f, 75.0f, 0.0, 0);
-    pauseBtn = QuadTexture("GUI/MediumGreenButton.png", 125.0f, 92.0f, 0.0, 0);
-    acceptBtn = QuadTexture("GUI/GreenButton.png", 130.0f, 88.0f, 0.0, 0);
+    //pauseBtn = QuadTexture("GUI/MediumGreenButton.png", 125.0f, 92.0f, 0.0, 0);
+    //acceptBtn = QuadTexture("GUI/GreenButton.png", 130.0f, 88.0f, 0.0, 0);
 
 
     // ::::::::::::::: TEXT RENDERER ::::::::::::::::::: //
@@ -475,24 +475,25 @@ void drawWater(glm::mat4 view, glm::mat4 projection) {
 
 void drawGUI() {
 
-    if (!gameStarted && startMessage) {
-        // Texto de arriba    
-        text = "Minijuego";
-        interStatusTxt->RenderText(text, -0.665f, 0.32f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
-        //Descripcion
-        text = "Objetivo: encontrar los 4 digitos";
-        gameInfoTxt->RenderText(text, -0.67f, 0.52f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
-        text = " escondidos en el lugar";
-        gameInfoTxt2->RenderText(text, -0.67f, 0.62f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
-        //Cerrar
-        text = "Presione K para jugar o L para cancelar";
-        acceptTxt->RenderText(text, -0.47f, 0.87f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
-        dialogBox.Draw(glm::vec2(0.0f, -0.6f), glm::vec3(1.7f, 0.8f, 0.5));
+    if (!gameStarted) {
+        if (startMessage) {
+            // Texto de arriba    
+            text = "Minijuego";
+            interStatusTxt->RenderText(text, -0.665f, 0.32f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+            //Descripcion
+            text = "Objetivo: encontrar los 4 digitos";
+            gameInfoTxt->RenderText(text, -0.67f, 0.52f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+            text = " escondidos en el lugar";
+            gameInfoTxt2->RenderText(text, -0.67f, 0.62f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+            //Cerrar
+            text = "Presione K para jugar o L para cancelar";
+            acceptTxt->RenderText(text, -0.47f, 0.87f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+            dialogBox.Draw(glm::vec2(0.0f, -0.6f), glm::vec3(1.7f, 0.8f, 0.5));
+        }
         return;
     }
 
-
-    if (collidedObject && interactingWithObject) {
+    if (collidedObject && interactingWithObject && !gameCompleted) {
         
         if (digitFound) {
 
@@ -538,10 +539,27 @@ void drawGUI() {
    
 
     // Digit register
-    string digitStr = digitsToText();
-    text = digitStr.c_str();
-    digitRegTxt->RenderText(text, -0.67f, -0.868f, 0.0027f, glm::vec3(0.08f, 0.0f, 0.0f));
-    digitBar.Draw(glm::vec2(-0.6f, 0.83f), glm::vec3(0.6f, 0.23f, 0.5));
+    if (!gameCompleted) {
+        string digitStr = digitsToText();
+        text = digitStr.c_str();
+        digitRegTxt->RenderText(text, -0.67f, -0.868f, 0.0027f, glm::vec3(0.08f, 0.0f, 0.0f));
+        digitBar.Draw(glm::vec2(-0.6f, 0.83f), glm::vec3(0.6f, 0.23f, 0.5));
+    }
+    else {
+        if (showFinalMsg) {
+            // Texto de arriba    
+            text = "Juego completado";
+            interStatusTxt->RenderText(text, -0.665f, 0.32f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+            //Descripcion
+            text = "Felicidades";
+            objectInfoTxt->RenderText(text, -0.67f, 0.52f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+            //Cerrar
+            text = "Presione M para cerrar";
+            acceptTxt->RenderText(text, -0.07f, 0.87f, 0.0017, glm::vec3(0.1f, 0.0f, 0.0f));
+            dialogBox.Draw(glm::vec2(0.0f, -0.6f), glm::vec3(1.7f, 0.8f, 0.5));
+        }
+    }
+
 
    
         // Lluvia
